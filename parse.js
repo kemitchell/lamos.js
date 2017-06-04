@@ -6,9 +6,9 @@ module.exports = function (input) {
   input
     .split(/\n\r?/)
     .forEach(function (line, index) {
-      core.tokenizeLine(tokenizerState, line, index + 1, send)
+      core.tokenizeLine(tokenizerState, line, index + 1, emitToken)
     })
-  core.flushTokenizer(tokenizerState, send)
+  core.flushTokenizer(tokenizerState, emitToken)
 
   var parserState = core.parserState()
   tokens.forEach(function (token) {
@@ -16,7 +16,7 @@ module.exports = function (input) {
   })
   return core.parserResult(parserState)
 
-  function send (token) {
+  function emitToken (token) {
     tokens.push(token)
   }
 }

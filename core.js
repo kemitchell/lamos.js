@@ -25,7 +25,7 @@ var endsWith = String.prototype.endsWith
     return string.lastIndexOf(substring) === string.length - 1
   }
 
-exports.tokenizeLine = function (state, line, number, send) {
+exports.tokenizeLine = function (state, line, number, emitToken) {
   line = line.toString()
   if (line.trim().length === 0) {
     return
@@ -57,7 +57,7 @@ exports.tokenizeLine = function (state, line, number, send) {
   } else {
     while (indent < state.lastIndent) {
       state.lastIndent--
-      send({end: state.stack.shift()})
+      emitToken({end: state.stack.shift()})
     }
   }
   state.lastIndent = indent
@@ -69,10 +69,9 @@ exports.tokenizeLine = function (state, line, number, send) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'list'
-      send({start: 'list'})
+      emitToken({start: 'list'})
     }
-    send({string: content.substring(2)})
-    return
+    emitToken({string: content.substring(2)})
   } else if (content === '-') {
     if (state.stack[0] === 'map') {
       throw new Error(
@@ -80,9 +79,8 @@ exports.tokenizeLine = function (state, line, number, send) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'list'
-      send({start: 'list'})
+      emitToken({start: 'list'})
     }
-    return
   } else if (endsWith(content, ':')) {
     if (state.stack[0] === 'list') {
       throw new Error(
@@ -90,10 +88,9 @@ exports.tokenizeLine = function (state, line, number, send) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
-      send({start: 'map'})
+      emitToken({start: 'map'})
     }
-    send({key: content.substr(0, content.length - 1)})
-    return
+    emitToken({key: content.substr(0, content.length - 1)})
   } else {
     var split = content.split(': ', 2)
     var key = split[0]
@@ -103,17 +100,16 @@ exports.tokenizeLine = function (state, line, number, send) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
-      send({start: 'map'})
+      emitToken({start: 'map'})
     }
-    send({key: key})
-    send({string: split[1]})
-    return
+    emitToken({key: key})
+    emitToken({string: split[1]})
   }
 }
 
-exports.flushTokenizer = function (state, send) {
+exports.flushTokenizer = function (state, emitToken) {
   while (state.stack.length > 0) {
-    send({end: state.stack.shift()})
+    emitToken({end: state.stack.shift()})
   }
 }
 
