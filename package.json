@@ -1,0 +1,28 @@
+{
+  "name": "lamos",
+  "version": "0.0.0",
+  "description": "serialize lists and maps of strings",
+  "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
+  "repository": "kemitchell/lamos.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "node test.js",
+    "precoverage": "istanbul cover -- test.js",
+    "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100"
+  },
+  "dependencies": {
+    "duplexify": "^3.5.0",
+    "flush-write-stream": "^1.0.2",
+    "pump": "^1.0.2",
+    "pumpify": "^1.3.5",
+    "readable-stream": "^2.2.10",
+    "split2": "^2.1.1",
+    "string-to-stream": "^1.1.0",
+    "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "concat-stream": "^1.6.0",
+    "istanbul": "^0.4.5",
+    "tape": "^4.6.3"
+  }
+}
