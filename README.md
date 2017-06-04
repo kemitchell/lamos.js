@@ -1,4 +1,4 @@
-Lists of Maps and Strings (lamos) is a very simple, plain-text data serialization format:
+Lists of Maps and Strings (LAMOS) is a very simple, plain-text data serialization format:
 
 ```lamos
 format:
@@ -17,7 +17,7 @@ nesting:
 # The parser ignores blank lines.
 ```
 
-Compared to its nearest, cousin, YAML, lamos:
+Compared to its nearest, cousin, YAML, LAMOS:
 
 1.  has many, many fewer data types.  No boolean.  No numbers.  No dates.  No extensible type system.  Just lists, maps, and strings.
 
@@ -25,7 +25,7 @@ Compared to its nearest, cousin, YAML, lamos:
 
 3.  is much, much easier to parse.  The code is short, simple, and easy to port.
 
-This JavaScript implementation exposes an API reminiscent of the built-in `JSON` object:
+This JavaScript implementation exposes an API of the built-in `JSON` object:
 
 ```javascript
 var lamos = require('lamos')
