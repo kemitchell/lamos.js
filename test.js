@@ -9,7 +9,7 @@ var examples = require('./examples').map(function (example) {
   return example
 })
 
-tape('stringify', function (suite) {
+tape('parse', function (suite) {
   examples.forEach(function (example) {
     suite.test(example.name, function (test) {
       if (example.js) {
@@ -84,6 +84,38 @@ tape('round trips', function (suite) {
       })
     }
   })
+})
+
+tape('stable round trips', function (suite) {
+  examples.forEach(function (example) {
+    if (example.js) {
+      suite.test(example.name, function (test) {
+        pump(
+          stringToStream(lamos.stableStringify(example.js)),
+          lamos.concat(function (parsed) {
+            test.deepEqual(parsed, example.js)
+            test.end()
+          })
+        )
+      })
+    }
+  })
+})
+
+tape('stable stringify sorting', function (test) {
+  test.equal(
+    lamos.stableStringify({
+      c: 'z',
+      b: 'y',
+      a: 'x'
+    }),
+    [
+      'a: x',
+      'b: y',
+      'c: z'
+    ].join('\n')
+  )
+  test.end()
 })
 
 tape('streaming round trips', function (suite) {

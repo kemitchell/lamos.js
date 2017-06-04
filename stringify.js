@@ -1,5 +1,9 @@
-module.exports = function (data) {
+exports.unsorted = function (data) {
   return recurse(data, 0)
+}
+
+exports.sorted = function (data) {
+  return recurse(data, 0, true)
 }
 
 var repeat = String.prototype.repeat
@@ -15,7 +19,7 @@ var repeat = String.prototype.repeat
     return returned
   }
 
-function recurse (data, indent) {
+function recurse (data, indent, sortKeys) {
   var prefix = repeat('  ', indent)
   if (Array.isArray(data)) {
     return data
@@ -25,13 +29,19 @@ function recurse (data, indent) {
         } else {
           return (
             prefix + '-\n' +
-            recurse(element, indent + 1)
+            recurse(element, indent + 1, sortKeys)
           )
         }
       })
       .join('\n')
   } else {
-    return Object.keys(data)
+    return (
+      sortKeys
+        ? Object.keys(data)
+          .concat() // shallow clone
+          .sort()
+        : Object.keys(data)
+    )
       .map(function (key) {
         var value = data[key]
         if (typeof value === 'string') {
@@ -39,7 +49,7 @@ function recurse (data, indent) {
         } else {
           return (
             prefix + key + ':\n' +
-            recurse(value, indent + 1)
+            recurse(value, indent + 1, sortKeys)
           )
         }
       })
