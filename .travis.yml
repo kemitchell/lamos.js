@@ -5,3 +5,4 @@ sudo: false
 script:
 - npm run coverage
 - npm run lint
+- npm run prepublish
