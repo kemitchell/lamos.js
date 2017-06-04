@@ -17,6 +17,14 @@ nesting:
 # The parser ignores blank lines.
 ```
 
+Compared to its nearest, cousin, YAML, lamos:
+
+1.  has many, many fewer data types.  No boolean.  No numbers.  No dates.  No extensible type system.  Just lists, maps, and strings.
+
+2.  is much more strict.  Nested structures are always indented.  There is no "shorthand" syntax for maps or lists.  Indentation is always two spaces.  Multi-line strings are not allowed.
+
+3.  is much, much easier to parse.  Both stringify and parse functions are comically short, simple, and easy to port.
+
 This JavaScript implementation exposes an API reminiscent of the built-in `JSON` object:
 
 ```javascript
