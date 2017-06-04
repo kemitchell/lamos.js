@@ -1,11 +1,11 @@
 var concat = require('concat-stream')
-var lamos = require('./')
+var LaMoS = require('./')
 var pump = require('pump')
 var stringToStream = require('string-to-stream')
 var tape = require('tape')
 
 tape('simple map', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'a: x',
       'b: y'
@@ -19,7 +19,7 @@ tape('simple map', function (test) {
 })
 
 tape('parse stream', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     stringToStream([
       'a: x',
       'b: y'
@@ -33,7 +33,7 @@ tape('parse stream', function (test) {
 })
 
 tape('simple list', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       '- x',
       '- y'
@@ -54,7 +54,7 @@ tape('parse map containing list', function (test) {
       '  - y',
       '  - z'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     concat(function (tokens) {
       test.deepEqual(
         tokens,
@@ -83,7 +83,7 @@ tape('parse map containing list of maps', function (test) {
       '    b: y',
       '    c: z'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     concat(function (tokens) {
       test.deepEqual(
         tokens,
@@ -107,7 +107,7 @@ tape('parse map containing list of maps', function (test) {
 })
 
 tape('map containing list of maps', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'a:',
       '  -',
@@ -123,7 +123,7 @@ tape('map containing list of maps', function (test) {
 })
 
 tape('map containing list', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'a: x',
       'b:',
@@ -139,7 +139,7 @@ tape('map containing list', function (test) {
 })
 
 tape('list containing list', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       '- x',
       '-',
@@ -155,7 +155,7 @@ tape('list containing list', function (test) {
 })
 
 tape('complex', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'Beatles:',
       '  -',
@@ -218,7 +218,7 @@ tape('complex', function (test) {
 })
 
 tape('ignores blank lines', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'a: x',
       '',
@@ -235,7 +235,7 @@ tape('ignores blank lines', function (test) {
 })
 
 tape('ignores comment lines', function (test) {
-  lamos.parse(
+  LaMoS.parse(
     [
       'a: x',
       '# blah blah',
@@ -257,7 +257,7 @@ tape('invalid indentation', function (test) {
       'a:',
       ' - x'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -274,7 +274,7 @@ tape('indented too far', function (test) {
       'a:',
       '    - x'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -291,7 +291,7 @@ tape('list item within map', function (test) {
       'a: x',
       '- y'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -308,7 +308,7 @@ tape('list item within map', function (test) {
       'a: x',
       '- y'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -325,7 +325,7 @@ tape('map item within list', function (test) {
       '- x',
       'b: y'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -344,7 +344,7 @@ tape('list item containing map within map', function (test) {
       '  b: y',
       '  c: z'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -362,7 +362,7 @@ tape('list item containing list within map', function (test) {
       'b:',
       '  - z'
     ].join('\n')),
-    lamos.parser(),
+    LaMoS.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -396,8 +396,8 @@ tape('round trips', function (suite) {
 
   function roundTrip (name, json) {
     suite.test(name, function (test) {
-      var stringified = lamos.stringify(json)
-      lamos.parse(stringified, function (error, parsed) {
+      var stringified = LaMoS.stringify(json)
+      LaMoS.parse(stringified, function (error, parsed) {
         test.ifError(error)
         test.deepEqual(parsed, json)
         test.end()

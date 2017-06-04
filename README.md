@@ -1,4 +1,4 @@
-Lists of Maps and Strings (LaMOs) is a very simple, plain-text data serialization format:
+Lists of Maps and Strings (lamos) is a very simple, plain-text data serialization format:
 
 ```lamos
 format:
@@ -20,10 +20,10 @@ nesting:
 This JavaScript implementation exposes an API reminiscent of the built-in `JSON` object:
 
 ```javascript
-var LAMOS = require('lamos')
+var lamos = require('lamos')
 var assert = require('assert')
 
-LAMOS.parse(
+lamos.parse(
   [
     'a: x',
     'b: y'
@@ -41,7 +41,7 @@ LAMOS.parse(
 )
 
 assert.equal(
-  LAMOS.stringify(
+  lamos.stringify(
     {
       a: 'x',
       b: 'y'
@@ -54,12 +54,12 @@ assert.equal(
 )
 ```
 
-`LAMOS.parse` will also take Node stream arguments:
+`lamos.parse` will also take Node stream arguments:
 
 ```javascript
 var stringToStream = require('string-to-stream')
 
-LAMOS.parse(
+lamos.parse(
   stringToStream(
     [
       'a: x',
@@ -92,7 +92,7 @@ pump(
     '  - y',
     '  - z'
   ].join('\n')),
-  LAMOS.parser(),
+  lamos.parser(),
   concat(function (tokens) {
     assert.deepEqual(
       tokens,
