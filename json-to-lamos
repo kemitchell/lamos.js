@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+var buffer = []
+process.stdin
+  .on('data', function (chunk) {
+    buffer.push(chunk)
+  })
+  .once('error', function (error) {
+    throw error
+  })
+  .once('end', function () {
+    var json
+    try {
+      json = JSON.parse(Buffer.concat(buffer))
+    } catch (error) {
+      throw error
+    }
+    process.stdout.write(require('./').stringify(json) + '\n')
+  })

@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+var pump = require('pump')
+var through2 = require('through2')
+
+var stack = []
+var firstElement = true
+
+pump(
+  process.stdin,
+  require('./').tokenizer(),
+  through2.obj(function (token, _, done) {
+    /* istanbul ignore else */
+    if (token.start) {
+      this.push(token.start === 'map' ? '{' : '[')
+      stack.unshift(token.start)
+      firstElement = true
+    } else if (token.end) {
+      this.push(token.end === 'map' ? '}' : ']')
+      stack.shift()
+      firstElement = false
+    } else if (token.key) {
+      if (!firstElement && stack[0] === 'map') {
+        this.push(',')
+      }
+      this.push(JSON.stringify(token.key) + ':')
+      firstElement = false
+    } else if (token.string) {
+      if (!firstElement && stack[0] === 'list') {
+        this.push(',')
+      }
+      this.push(JSON.stringify(token.string))
+      firstElement = false
+    } else {
+      return done(new Error('Invalid token: ' + JSON.stringify(token)))
+    }
+    done()
+  }),
+  process.stdout,
+  function (error) {
+    throw error
+  }
+)
