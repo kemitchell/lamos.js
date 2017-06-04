@@ -14,6 +14,7 @@
   "devDependencies": {
     "concat-stream": "^1.6.0",
     "defence-cli": "^2.0.1",
+    "depcheck": "^0.6.7",
     "istanbul": "^0.4.5",
     "replace-require-self": "^1.1.1",
     "standard": "^10.0.2",
@@ -26,6 +27,7 @@
     "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
     "lint": "standard && standard-markdown",
     "precoverage": "istanbul cover -- test.js",
+    "prepublish": "depcheck",
     "test": "node test.js && defence -i javascript < README.md | replace-require-self | node"
   }
 }
