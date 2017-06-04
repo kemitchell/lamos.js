@@ -6,6 +6,7 @@ var repeat = String.prototype.repeat
   ? function (string, times) {
     return string.repeat(times)
   }
+  /* istanbul ignore next */
   : function repeat (string, times) {
     var returned = ''
     for (var i = 0; i < times; i++) {
@@ -45,4 +46,3 @@ function recurse (data, indent) {
       .join('\n')
   }
 }
-

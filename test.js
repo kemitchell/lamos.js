@@ -18,6 +18,20 @@ tape('simple map', function (test) {
   )
 })
 
+tape('parse stream', function (test) {
+  lamos.parse(
+    stringToStream([
+      'a: x',
+      'b: y'
+    ].join('\n')),
+    function (error, result) {
+      test.ifError(error)
+      test.deepEqual(result, {a: 'x', b: 'y'})
+      test.end()
+    }
+  )
+})
+
 tape('simple list', function (test) {
   lamos.parse(
     [

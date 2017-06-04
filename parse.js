@@ -14,6 +14,7 @@ module.exports = function (input, callback) {
     input,
     parser(),
     flushWriteStream.obj(function (chunk, _, done) {
+      /* istanbul ignore else */
       if (chunk.start) {
         var structure = chunk.start === 'map'
           ? {}
@@ -36,10 +37,15 @@ module.exports = function (input, callback) {
         } else {
           stack[0][lastKey] = chunk.string
         }
+      } else {
+        done(new Error(
+          'Invalid token: ' + JSON.stringify(chunk)
+        ))
       }
       done()
     }),
     function (error, done) {
+      /* istanbul ignore if */
       if (error) {
         callback(error)
       } else {
