@@ -6,9 +6,7 @@ module.exports = function (input) {
   input
     .split(/\n\r?/)
     .forEach(function (line, index) {
-      core.tokenizeLine(
-        tokenizerState, line, index + 1, send
-      )
+      core.tokenizeLine(tokenizerState, line, index + 1, send)
     })
   core.flushTokenizer(tokenizerState, send)
 

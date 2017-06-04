@@ -132,9 +132,7 @@ exports.parseToken = function (state, token, done) {
   done = done || noop
   /* istanbul ignore else */
   if (token.start) {
-    var structure = token.start === 'map'
-      ? {}
-      : []
+    var structure = token.start === 'map' ? {} : []
     if (Array.isArray(state.stack[0])) {
       state.stack[0].push(structure)
     } else {

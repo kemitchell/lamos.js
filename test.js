@@ -13,10 +13,7 @@ tape('stringify', function (suite) {
   examples.forEach(function (example) {
     suite.test(example.name, function (test) {
       if (example.js) {
-        test.deepEqual(
-          lamos.parse(example.lamos),
-          example.js
-        )
+        test.deepEqual(lamos.parse(example.lamos), example.js)
         test.end()
       } else {
         test.throws(function () {
@@ -47,9 +44,7 @@ tape('concat', function (suite) {
             test.end()
           }),
           function (error) {
-            test.equal(
-              error.message, example.error
-            )
+            test.equal(error.message, example.error)
             test.end()
           }
         )
