@@ -27,17 +27,19 @@ var endsWith = String.prototype.endsWith
 
 exports.tokenizeLine = function (state, line, number, emitToken) {
   line = line.toString()
+  // Ignore empty lines.
   if (line.trim().length === 0) {
     return
   }
-  var match = LINE.exec(line)
 
+  var match = LINE.exec(line)
   var content = match[2]
+  // Ignore comment lines.
   if (startsWith(content, '#')) {
-    // Ignore comment line.
     return
   }
 
+  // Check indentation.
   var leadingSpaces = match[1].length
   if (leadingSpaces % 2 === 1) {
     throw new Error(
@@ -52,9 +54,14 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
         'Line ' + number + ' is indented too far.'
       )
     } else {
+      // Unshift a null onto the stack for indented
+      // structure. The parser will find out what kind of
+      // structure it is later.
       state.stack.unshift(null)
     }
   } else {
+    // Shift structures off the stack for each level
+    // indented out.
     while (indent < state.lastIndent) {
       state.lastIndent--
       emitToken({end: state.stack.shift()})
@@ -62,6 +69,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
   state.lastIndent = indent
 
+  // List Item
   if (startsWith(content, '- ')) {
     if (state.stack[0] === 'map') {
       throw new Error(
@@ -72,6 +80,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({start: 'list'})
     }
     emitToken({string: content.substring(2)})
+  // List Item Containing Map
   } else if (content === '-') {
     if (state.stack[0] === 'map') {
       throw new Error(
@@ -81,6 +90,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       state.stack[0] = 'list'
       emitToken({start: 'list'})
     }
+  // Map Containing List Item
   } else if (endsWith(content, ':')) {
     if (state.stack[0] === 'list') {
       throw new Error(
@@ -91,6 +101,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({start: 'map'})
     }
     emitToken({key: content.substr(0, content.length - 1)})
+  // Map Key-String Pair
   } else {
     var split = content.split(': ', 2)
     var key = split[0]
@@ -123,6 +134,7 @@ exports.parserState = function () {
 exports.parseToken = function (state, token) {
   /* istanbul ignore else */
   if (token.start) {
+    // Add the new structure to stack[0].
     var structure = token.start === 'map' ? {} : []
     if (Array.isArray(state.stack[0])) {
       state.stack[0].push(structure)
@@ -131,14 +143,20 @@ exports.parseToken = function (state, token) {
         state.stack[0][state.lastKey] = structure
       }
     }
+    // Unshift the new structure, so it becomes stack[0].
     state.stack.unshift(structure)
   } else if (token.end) {
+    // Retain values shifted off the stack. When the parser
+    // is done, the last structure shifted off is the
+    // fully-parsed result.
     state.value = state.stack.shift()
   } else if (token.key) {
     state.lastKey = token.key
   } else if (token.string) {
+    // In an array, push the string.
     if (Array.isArray(state.stack[0])) {
       state.stack[0].push(token.string)
+    // In a map, set property.
     } else {
       state.stack[0][state.lastKey] = token.string
     }
