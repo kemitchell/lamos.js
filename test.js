@@ -85,3 +85,20 @@ tape('round trips', function (suite) {
     }
   })
 })
+
+tape('streaming round trips', function (suite) {
+  examples.forEach(function (example) {
+    if (example.js) {
+      suite.test(example.name, function (test) {
+        pump(
+          stringToStream(lamos.stringify(example.js)),
+          lamos.toJSON(),
+          concat(function (buffer) {
+            test.deepEqual(JSON.parse(buffer), example.js)
+            test.end()
+          })
+        )
+      })
+    }
+  })
+})
