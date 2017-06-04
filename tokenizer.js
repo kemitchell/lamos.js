@@ -13,7 +13,12 @@ module.exports = function () {
         var push = this.push.bind(this)
         line = line.toString()
         lineNumber++
-        core.tokenizeLine(state, line, lineNumber, push, done)
+        try {
+          core.tokenizeLine(state, line, lineNumber, push)
+          done()
+        } catch (error) {
+          done(error)
+        }
       },
       function (done) {
         core.flushTokenizer(state, this.push.bind(this), done)

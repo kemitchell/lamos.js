@@ -9,7 +9,12 @@ module.exports = function (callback) {
     parser(),
     flushWriteStream.obj(
       function (token, _, done) {
-        core.parseToken(state, token, done)
+        /* istanbul ignore next */
+        try {
+          core.parseToken(state, token, done)
+        } catch (error) {
+          done(error)
+        }
       },
       function (done) {
         callback(core.parserResult(state))

@@ -9,6 +9,7 @@ var LINE = /^(\s*)(.+)$/
 
 exports.tokenizeLine = function (state, line, number, send, done) {
   line = line.toString()
+  done = done || noop
   if (line.trim().length === 0) {
     return done()
   }
@@ -22,17 +23,17 @@ exports.tokenizeLine = function (state, line, number, send, done) {
 
   var leadingSpaces = match[1].length
   if (leadingSpaces % 2 === 1) {
-    return done(new Error(
+    throw new Error(
       'Line ' + number + ' is not indented ' +
       'with an even number of spaces.'
-    ))
+    )
   }
   var indent = leadingSpaces / 2
   if (indent > state.lastIndent) {
     if (indent - state.lastIndent > 1) {
-      return done(new Error(
+      throw new Error(
         'Line ' + number + ' is indented too far.'
-      ))
+      )
     } else {
       state.stack.unshift(null)
     }
@@ -46,9 +47,9 @@ exports.tokenizeLine = function (state, line, number, send, done) {
 
   if (startsWith(content, '- ')) {
     if (state.stack[0] === 'map') {
-      return done(new Error(
+      throw new Error(
         'Line ' + number + ' is a list item within a map.'
-      ))
+      )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'list'
       send({start: 'list'})
@@ -57,9 +58,9 @@ exports.tokenizeLine = function (state, line, number, send, done) {
     return done()
   } else if (content === '-') {
     if (state.stack[0] === 'map') {
-      return done(new Error(
+      throw new Error(
         'Line ' + number + ' is a list item within a map.'
-      ))
+      )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'list'
       send({start: 'list'})
@@ -67,9 +68,9 @@ exports.tokenizeLine = function (state, line, number, send, done) {
     return done()
   } else if (endsWith(content, ':')) {
     if (state.stack[0] === 'list') {
-      return done(new Error(
+      throw new Error(
         'Line ' + number + ' is a map item within a list.'
-      ))
+      )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
       send({start: 'map'})
@@ -80,9 +81,9 @@ exports.tokenizeLine = function (state, line, number, send, done) {
     var split = content.split(': ', 2)
     var key = split[0]
     if (state.stack[0] === 'list') {
-      return done(new Error(
+      throw new Error(
         'Line ' + number + ' is a map item within a list.'
-      ))
+      )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
       send({start: 'map'})
@@ -110,6 +111,7 @@ exports.parserState = function () {
 }
 
 exports.parseToken = function (state, token, done) {
+  done = done || noop
   /* istanbul ignore else */
   if (token.start) {
     var structure = token.start === 'map'
@@ -134,9 +136,9 @@ exports.parseToken = function (state, token, done) {
       state.stack[0][state.lastKey] = token.string
     }
   } else {
-    done(new Error(
+    throw new Error(
       'Invalid token: ' + JSON.stringify(token)
-    ))
+    )
   }
   done()
 }
@@ -152,3 +154,5 @@ function startsWith (string, substring) {
 function endsWith (string, substring) {
   return string.lastIndexOf(substring) === string.length - 1
 }
+
+function noop () { }
