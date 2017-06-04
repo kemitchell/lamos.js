@@ -1,0 +1,308 @@
+[
+  {
+    "name": "simple map",
+    "lamos": [
+      "a: x",
+      "b: y"
+    ],
+    "js": {
+      "a": "x",
+      "b": "y"
+    }
+  },
+  {
+    "name": "simple list",
+    "lamos": [
+      "- x",
+      "- y"
+    ],
+    "js": [
+      "x",
+      "y"
+    ]
+  },
+  {
+    "name": "map containing list of maps",
+    "lamos": [
+      "a:",
+      "  -",
+      "    b: y",
+      "    c: z"
+    ],
+    "js": {
+      "a": [
+        {
+          "b": "y",
+          "c": "z"
+        }
+      ]
+    },
+    "tokens": [
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      {
+        "start": "list"
+      },
+      {
+        "start": "map"
+      },
+      {
+        "key": "b"
+      },
+      {
+        "string": "y"
+      },
+      {
+        "key": "c"
+      },
+      {
+        "string": "z"
+      },
+      {
+        "end": "map"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      }
+    ]
+  },
+  {
+    "name": "map containing list",
+    "lamos": [
+      "a: x",
+      "b:",
+      "  - y",
+      "  - z"
+    ],
+    "js": {
+      "a": "x",
+      "b": [
+        "y",
+        "z"
+      ]
+    },
+    "tokens": [
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      {
+        "string": "x"
+      },
+      {
+        "key": "b"
+      },
+      {
+        "start": "list"
+      },
+      {
+        "string": "y"
+      },
+      {
+        "string": "z"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      }
+    ]
+  },
+  {
+    "name": "list containing list",
+    "lamos": [
+      "- x",
+      "-",
+      "  - y",
+      "  - z"
+    ],
+    "js": [
+      "x",
+      [
+        "y",
+        "z"
+      ]
+    ]
+  },
+  {
+    "name": "Beatles and Stones",
+    "lamos": [
+      "Beatles:",
+      "  -",
+      "    name: John",
+      "    plays: bass",
+      "  -",
+      "    name: Paul",
+      "    plays: guitar",
+      "  -",
+      "    name: George",
+      "    plays: guitar",
+      "  -",
+      "    name: Ringo",
+      "    plays: guitar",
+      "",
+      "Rolling Stones:",
+      "  -",
+      "    name: Brian",
+      "    plays: guitar",
+      "  -",
+      "    name: Mick",
+      "    plays: vocals",
+      "  -",
+      "    name: Keith",
+      "    plays: guitar",
+      "  -",
+      "    name: Bill",
+      "    plays: bass",
+      "  -",
+      "    name: Charlie",
+      "    plays: drums",
+      "  -",
+      "    name: Ian",
+      "    plays: piano"
+    ],
+    "js": {
+      "Beatles": [
+        {
+          "name": "John",
+          "plays": "bass"
+        },
+        {
+          "name": "Paul",
+          "plays": "guitar"
+        },
+        {
+          "name": "George",
+          "plays": "guitar"
+        },
+        {
+          "name": "Ringo",
+          "plays": "guitar"
+        }
+      ],
+      "Rolling Stones": [
+        {
+          "name": "Brian",
+          "plays": "guitar"
+        },
+        {
+          "name": "Mick",
+          "plays": "vocals"
+        },
+        {
+          "name": "Keith",
+          "plays": "guitar"
+        },
+        {
+          "name": "Bill",
+          "plays": "bass"
+        },
+        {
+          "name": "Charlie",
+          "plays": "drums"
+        },
+        {
+          "name": "Ian",
+          "plays": "piano"
+        }
+      ]
+    }
+  },
+  {
+    "name": "ignores blank lines",
+    "lamos": [
+      "a: x",
+      "",
+      "b: y",
+      "",
+      ""
+    ],
+    "js": {
+      "a": "x",
+      "b": "y"
+    }
+  },
+  {
+    "name": "ignores comment lines",
+    "lamos": [
+      "a: x",
+      "# blah blah",
+      "b: y",
+      "# blah blah",
+      "# blah blah"
+    ],
+    "js": {
+      "a": "x",
+      "b": "y"
+    }
+  },
+  {
+    "name": "invalid indentation",
+    "lamos": [
+      "a:",
+      " - x"
+    ],
+    "error": "Line 2 is not indented with an even number of spaces."
+  },
+  {
+    "name": "indented too far",
+    "lamos": [
+      "a:",
+      "    - x"
+    ],
+    "error": "Line 2 is indented too far."
+  },
+  {
+    "name": "list item within map",
+    "lamos": [
+      "a: x",
+      "- y"
+    ],
+    "error": "Line 2 is a list item within a map."
+  },
+  {
+    "name": "list item within map",
+    "lamos": [
+      "a: x",
+      "- y"
+    ],
+    "error": "Line 2 is a list item within a map."
+  },
+  {
+    "name": "map item within list",
+    "lamos": [
+      "- x",
+      "b: y"
+    ],
+    "error": "Line 2 is a map item within a list."
+  },
+  {
+    "name": "list item containing map within map",
+    "lamos": [
+      "a: x",
+      "-",
+      "  b: y",
+      "  c: z"
+    ],
+    "error": "Line 2 is a list item within a map."
+  },
+  {
+    "name": "list item containing list within map",
+    "lamos": [
+      "- x",
+      "b:",
+      "  - z"
+    ],
+    "error": "Line 2 is a map item within a list."
+  }
+]

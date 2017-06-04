@@ -1,56 +1,37 @@
-var flushWriteStream = require('flush-write-stream')
-var parser = require('./parser')
-var pump = require('pump')
-var stringToStream = require('string-to-stream')
+var core = require('./core')
 
-module.exports = function (input, callback) {
-  if (typeof input === 'string') {
-    input = stringToStream(input)
-  }
-  var lastKey
-  var stack = []
-  var value
-  pump(
-    input,
-    parser(),
-    flushWriteStream.obj(function (chunk, _, done) {
-      /* istanbul ignore else */
-      if (chunk.start) {
-        var structure = chunk.start === 'map'
-          ? {}
-          : []
-        if (Array.isArray(stack[0])) {
-          stack[0].push(structure)
-        } else {
-          if (lastKey) {
-            stack[0][lastKey] = structure
-          }
-        }
-        stack.unshift(structure)
-      } else if (chunk.end) {
-        value = stack.shift()
-      } else if (chunk.key) {
-        lastKey = chunk.key
-      } else if (chunk.string) {
-        if (Array.isArray(stack[0])) {
-          stack[0].push(chunk.string)
-        } else {
-          stack[0][lastKey] = chunk.string
-        }
-      } else {
-        done(new Error(
-          'Invalid token: ' + JSON.stringify(chunk)
-        ))
+module.exports = function (input) {
+  var errorToThrow
+
+  var tokenizerState = core.tokenizerState()
+  var tokens = []
+  input
+    .split(/\n\r?/)
+    .forEach(function (line, index) {
+      core.tokenizeLine(
+        tokenizerState, line, index + 1, send, onError
+      )
+      if (errorToThrow) {
+        throw errorToThrow
       }
-      done()
-    }),
-    function (error, done) {
-      /* istanbul ignore if */
-      if (error) {
-        callback(error)
-      } else {
-        callback(null, value)
-      }
+    })
+  core.flushTokenizer(tokenizerState, send)
+
+  var parserState = core.parserState()
+  tokens.forEach(function (token) {
+    core.parseToken(parserState, token, onError)
+    /* istanbul ignore if */
+    if (errorToThrow) {
+      throw errorToThrow
     }
-  )
+  })
+  return core.parserResult(parserState)
+
+  function send (token) {
+    tokens.push(token)
+  }
+
+  function onError (error) {
+    errorToThrow = error
+  }
 }

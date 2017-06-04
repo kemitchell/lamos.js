@@ -31,20 +31,16 @@ This JavaScript implementation exposes an API reminiscent of the built-in `JSON`
 var lamos = require('lamos')
 var assert = require('assert')
 
-lamos.parse(
-  [
-    'a: x',
-    'b: y'
-  ].join('\n'),
-  function (error, parsed) {
-    assert.ifError(error)
-    assert.deepEqual(
-      parsed,
-      {
-        a: 'x',
-        b: 'y'
-      }
-    )
+assert.deepEqual(
+  lamos.parse(
+    [
+      'a: x',
+      'b: y'
+    ].join('\n')
+  ),
+  {
+    a: 'x',
+    b: 'y'
   }
 )
 
@@ -62,20 +58,20 @@ assert.equal(
 )
 ```
 
-`lamos.parse` will also take Node stream arguments:
+For consuming streams, use `lamos.concat`, inspired by [concat-stream](https://www.npmjs.com/package/concat-stream):
 
 ```javascript
 var stringToStream = require('string-to-stream')
+var pump = require('pump')
 
-lamos.parse(
+pump(
   stringToStream(
     [
       'a: x',
       'b: y'
     ].join('\n')
   ),
-  function (error, parsed) {
-    assert.ifError(error)
+  lamos.concat(function (parsed) {
     assert.deepEqual(
       parsed,
       {
@@ -83,14 +79,14 @@ lamos.parse(
         b: 'y'
       }
     )
-  }
+  })
 )
 ```
 
-In addition to the simple parser, there is also a Node.js transform stream that parses markup and emits tokens, ideal for processing long streams:
+The API also exposes a constructor for Node.js transform streams that parse markup and emit tokens, ideal for processing long streams:
 
 ```javascript
-var concat = require('concat-stream')
+var concatStream = require('concat-stream')
 var pump = require('pump')
 
 pump(
@@ -100,8 +96,8 @@ pump(
     '  - y',
     '  - z'
   ].join('\n')),
-  lamos.parser(),
-  concat(function (tokens) {
+  lamos.tokenizer(),
+  concatStream(function (tokens) {
     assert.deepEqual(
       tokens,
       [
