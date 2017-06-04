@@ -1,11 +1,11 @@
 var concat = require('concat-stream')
-var lomas = require('./')
+var lamos = require('./')
 var pump = require('pump')
 var stringToStream = require('string-to-stream')
 var tape = require('tape')
 
 tape('simple map', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'a: x',
       'b: y'
@@ -19,7 +19,7 @@ tape('simple map', function (test) {
 })
 
 tape('simple list', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       '- x',
       '- y'
@@ -40,7 +40,7 @@ tape('parse map containing list', function (test) {
       '  - y',
       '  - z'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     concat(function (tokens) {
       test.deepEqual(
         tokens,
@@ -69,7 +69,7 @@ tape('parse map containing list of maps', function (test) {
       '    b: y',
       '    c: z'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     concat(function (tokens) {
       test.deepEqual(
         tokens,
@@ -93,7 +93,7 @@ tape('parse map containing list of maps', function (test) {
 })
 
 tape('map containing list of maps', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'a:',
       '  -',
@@ -109,7 +109,7 @@ tape('map containing list of maps', function (test) {
 })
 
 tape('map containing list', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'a: x',
       'b:',
@@ -125,7 +125,7 @@ tape('map containing list', function (test) {
 })
 
 tape('list containing list', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       '- x',
       '-',
@@ -141,7 +141,7 @@ tape('list containing list', function (test) {
 })
 
 tape('complex', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'Beatles:',
       '  -',
@@ -204,7 +204,7 @@ tape('complex', function (test) {
 })
 
 tape('ignores blank lines', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'a: x',
       '',
@@ -221,7 +221,7 @@ tape('ignores blank lines', function (test) {
 })
 
 tape('ignores comment lines', function (test) {
-  lomas.parse(
+  lamos.parse(
     [
       'a: x',
       '# blah blah',
@@ -243,7 +243,7 @@ tape('invalid indentation', function (test) {
       'a:',
       ' - x'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -260,7 +260,7 @@ tape('indented too far', function (test) {
       'a:',
       '    - x'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -277,7 +277,7 @@ tape('list item within map', function (test) {
       'a: x',
       '- y'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -294,7 +294,7 @@ tape('list item within map', function (test) {
       'a: x',
       '- y'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -311,7 +311,7 @@ tape('map item within list', function (test) {
       '- x',
       'b: y'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -330,7 +330,7 @@ tape('list item containing map within map', function (test) {
       '  b: y',
       '  c: z'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -348,7 +348,7 @@ tape('list item containing list within map', function (test) {
       'b:',
       '  - z'
     ].join('\n')),
-    lomas.parser(),
+    lamos.parser(),
     function (error) {
       test.equal(
         error.message,
@@ -382,8 +382,8 @@ tape('round trips', function (suite) {
 
   function roundTrip (name, json) {
     suite.test(name, function (test) {
-      var stringified = lomas.stringify(json)
-      lomas.parse(stringified, function (error, parsed) {
+      var stringified = lamos.stringify(json)
+      lamos.parse(stringified, function (error, parsed) {
         test.ifError(error)
         test.deepEqual(parsed, json)
         test.end()
