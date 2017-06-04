@@ -1,16 +1,8 @@
 {
   "name": "lamos",
-  "version": "0.0.0",
   "description": "serialize lists and maps of strings",
+  "version": "0.0.0",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
-  "repository": "kemitchell/lamos.js",
-  "license": "MIT",
-  "scripts": {
-    "test": "node test.js",
-    "precoverage": "istanbul cover -- test.js",
-    "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
-    "lint": "standard && standard-markdown"
-  },
   "dependencies": {
     "duplexify": "^3.5.0",
     "flush-write-stream": "^1.0.2",
@@ -27,5 +19,13 @@
     "standard": "^10.0.2",
     "standard-markdown": "^2.3.0",
     "tape": "^4.6.3"
+  },
+  "license": "MIT",
+  "repository": "kemitchell/lamos.js",
+  "scripts": {
+    "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
+    "lint": "standard && standard-markdown",
+    "precoverage": "istanbul cover -- test.js",
+    "test": "node test.js"
   }
 }
