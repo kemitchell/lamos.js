@@ -7,6 +7,24 @@ exports.tokenizerState = function () {
 
 var LINE = /^(\s*)(.+)$/
 
+var startsWith = String.prototype.startsWith
+  ? function (string, substring) {
+    return string.startsWith(substring)
+  }
+  /* istanbul ignore next */
+  : function (string, substring) {
+    return string.indexOf(substring) === 0
+  }
+
+var endsWith = String.prototype.endsWith
+  ? function (string, substring) {
+    return string.endsWith(substring)
+  }
+  /* istanbul ignore next */
+  : function (string, substring) {
+    return string.lastIndexOf(substring) === string.length - 1
+  }
+
 exports.tokenizeLine = function (state, line, number, send, done) {
   line = line.toString()
   done = done || noop
@@ -145,14 +163,6 @@ exports.parseToken = function (state, token, done) {
 
 exports.parserResult = function (state) {
   return state.value
-}
-
-function startsWith (string, substring) {
-  return string.indexOf(substring) === 0
-}
-
-function endsWith (string, substring) {
-  return string.lastIndexOf(substring) === string.length - 1
 }
 
 function noop () { }
