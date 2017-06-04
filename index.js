@@ -1,5 +1,5 @@
 module.exports = {
   stringify: require('./stringify'),
-  parse: require('./to-json'),
+  parse: require('./parse'),
   parser: require('./parser')
 }
