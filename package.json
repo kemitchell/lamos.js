@@ -8,7 +8,8 @@
   "scripts": {
     "test": "node test.js",
     "precoverage": "istanbul cover -- test.js",
-    "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100"
+    "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
+    "lint": "standard && standard-markdown"
   },
   "dependencies": {
     "duplexify": "^3.5.0",
@@ -23,6 +24,8 @@
   "devDependencies": {
     "concat-stream": "^1.6.0",
     "istanbul": "^0.4.5",
+    "standard": "^10.0.2",
+    "standard-markdown": "^2.3.0",
     "tape": "^4.6.3"
   }
 }
