@@ -21,7 +21,8 @@ module.exports = function () {
         }
       },
       function (done) {
-        core.flushTokenizer(state, this.push.bind(this), done)
+        core.flushTokenizer(state, this.push.bind(this))
+        done()
       }
     )
   )

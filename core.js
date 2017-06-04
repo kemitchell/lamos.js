@@ -25,18 +25,17 @@ var endsWith = String.prototype.endsWith
     return string.lastIndexOf(substring) === string.length - 1
   }
 
-exports.tokenizeLine = function (state, line, number, send, done) {
+exports.tokenizeLine = function (state, line, number, send) {
   line = line.toString()
-  done = done || noop
   if (line.trim().length === 0) {
-    return done()
+    return
   }
   var match = LINE.exec(line)
 
   var content = match[2]
   if (startsWith(content, '#')) {
     // Ignore comment line.
-    return done()
+    return
   }
 
   var leadingSpaces = match[1].length
@@ -73,7 +72,7 @@ exports.tokenizeLine = function (state, line, number, send, done) {
       send({start: 'list'})
     }
     send({string: content.substring(2)})
-    return done()
+    return
   } else if (content === '-') {
     if (state.stack[0] === 'map') {
       throw new Error(
@@ -83,7 +82,7 @@ exports.tokenizeLine = function (state, line, number, send, done) {
       state.stack[0] = 'list'
       send({start: 'list'})
     }
-    return done()
+    return
   } else if (endsWith(content, ':')) {
     if (state.stack[0] === 'list') {
       throw new Error(
@@ -94,7 +93,7 @@ exports.tokenizeLine = function (state, line, number, send, done) {
       send({start: 'map'})
     }
     send({key: content.substr(0, content.length - 1)})
-    return done()
+    return
   } else {
     var split = content.split(': ', 2)
     var key = split[0]
@@ -108,16 +107,13 @@ exports.tokenizeLine = function (state, line, number, send, done) {
     }
     send({key: key})
     send({string: split[1]})
-    return done()
+    return
   }
 }
 
-exports.flushTokenizer = function (state, send, done) {
+exports.flushTokenizer = function (state, send) {
   while (state.stack.length > 0) {
     send({end: state.stack.shift()})
-  }
-  if (done) {
-    done()
   }
 }
 
@@ -128,8 +124,7 @@ exports.parserState = function () {
   }
 }
 
-exports.parseToken = function (state, token, done) {
-  done = done || noop
+exports.parseToken = function (state, token) {
   /* istanbul ignore else */
   if (token.start) {
     var structure = token.start === 'map' ? {} : []
@@ -156,11 +151,8 @@ exports.parseToken = function (state, token, done) {
       'Invalid token: ' + JSON.stringify(token)
     )
   }
-  done()
 }
 
 exports.parserResult = function (state) {
   return state.value
 }
-
-function noop () { }

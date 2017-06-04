@@ -11,10 +11,11 @@ module.exports = function (callback) {
       function (token, _, done) {
         /* istanbul ignore next */
         try {
-          core.parseToken(state, token, done)
+          core.parseToken(state, token)
         } catch (error) {
-          done(error)
+          return done(error)
         }
+        done()
       },
       function (done) {
         callback(core.parserResult(state))
