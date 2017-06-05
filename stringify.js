@@ -22,6 +22,9 @@ var repeat = String.prototype.repeat
 function recurse (data, indent, sortKeys, withinList) {
   var prefix = repeat('  ', indent)
   if (Array.isArray(data)) {
+    if (data.length === 0) {
+      throw new Error('Cannot serialize empty array.')
+    }
     return data
       .map(function (element, index) {
         var firstElement = index === 0
@@ -32,6 +35,9 @@ function recurse (data, indent, sortKeys, withinList) {
           element = element.toString()
         }
         if (typeof element === 'string') {
+          if (element.length === 0) {
+            throw new Error('Cannot serialize empty string.')
+          }
           if (withinList && firstElement) {
             return '- ' + element
           } else {
@@ -52,12 +58,16 @@ function recurse (data, indent, sortKeys, withinList) {
       })
       .join('\n')
   } else {
+    var keys = Object.keys(data)
+    if (keys.length === 0) {
+      throw new Error('Cannot serialize empty object.')
+    }
     return (
       sortKeys
-        ? Object.keys(data)
+        ? keys
           .concat() // shallow clone
           .sort()
-        : Object.keys(data)
+        : keys
     )
       .map(function (key, index) {
         var value = data[key]

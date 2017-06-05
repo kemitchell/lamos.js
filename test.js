@@ -135,16 +135,38 @@ tape('streaming round trips', function (suite) {
   })
 })
 
-tape('value coercion', function (suite) {
+tape('JSON coercion', function (suite) {
   coercion('null', [null], '- null')
   coercion('true', [true], '- true')
   coercion('false', [false], '- false')
   coercion('number', [1.234], '- 1.234')
 
+  coercionFailure(
+    'empty string', [''], 'Cannot serialize empty string.'
+  )
+  coercionFailure(
+    'empty array', [], 'Cannot serialize empty array.'
+  )
+  coercionFailure(
+    'empty object', {}, 'Cannot serialize empty object.'
+  )
+
   function coercion (name, js, lomas) {
     suite.test(name, function (test) {
       test.equal(lamos.stringify(js), lomas, 'stringify')
       test.equal(lamos.stableStringify(js), lomas, 'stableStringify')
+      test.end()
+    })
+  }
+
+  function coercionFailure (name, js, message) {
+    suite.test(name, function (test) {
+      test.throws(function () {
+        lamos.stringify(js)
+      }, message)
+      test.throws(function () {
+        lamos.stableStringify(js)
+      }, message)
       test.end()
     })
   }
