@@ -18,13 +18,27 @@ nesting:
       - with a list!
 ```
 
-Compared to its nearest, cousin, YAML, LAMOS:
+Compared to JSON:
+- no booleans
+- no numbers
+- no nulls
+- no empty strings
+- no character codes
+- supports comment lines
+- white space is significant
+- easier to type
+- easier to read
 
-1.  has many, many fewer data types.  No boolean.  No numbers.  No dates.  No extensible type system.  Just lists, maps, and strings.
-
-2.  is much more strict.  Nested structures are always indented.  There is no "shorthand" syntax for maps or lists.  Indentation is always two spaces.  Multi-line strings are not allowed.
-
-3.  is much, much easier to parse.  The code is short, simple, and easy to port.
+Compared to YAML:
+- keeps indentation
+- keeps comments
+- easy to parse
+- no booleans
+- no numbers
+- no extensible type system
+- no block scalars
+- one syntax for everything
+- no references
 
 This JavaScript implementation exposes an API of the built-in `JSON` object:
 
