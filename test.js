@@ -134,3 +134,18 @@ tape('streaming round trips', function (suite) {
     }
   })
 })
+
+tape('value coercion', function (suite) {
+  coercion('null', [null], '- null')
+  coercion('true', [true], '- true')
+  coercion('false', [false], '- false')
+  coercion('number', [1.234], '- 1.234')
+
+  function coercion (name, js, lomas) {
+    suite.test(name, function (test) {
+      test.equal(lamos.stringify(js), lomas, 'stringify')
+      test.equal(lamos.stableStringify(js), lomas, 'stableStringify')
+      test.end()
+    })
+  }
+})

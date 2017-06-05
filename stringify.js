@@ -25,6 +25,12 @@ function recurse (data, indent, sortKeys, withinList) {
     return data
       .map(function (element, index) {
         var firstElement = index === 0
+        var type = typeof element
+        if (element === null) {
+          element = 'null'
+        } else if (type === 'boolean' || type === 'number') {
+          element = element.toString()
+        }
         if (typeof element === 'string') {
           if (withinList && firstElement) {
             return '- ' + element
