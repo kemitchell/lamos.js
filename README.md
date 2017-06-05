@@ -18,27 +18,11 @@ nesting:
       - with a list!
 ```
 
-Compared to JSON:
-- no booleans
-- no numbers
-- no nulls
-- no empty strings
-- no character codes
-- supports comment lines
-- white space is significant
-- easier to type
-- easier to read
+There is just one datatype: raw, non-empty string.  Strings appear in just two structures: sequential lists and key-value maps.
 
-Compared to YAML:
-- keeps indentation
-- keeps comments
-- easy to parse
-- no booleans
-- no numbers
-- no extensible type system
-- no block scalars
-- one syntax for everything
-- no references
+That's it.  There are no nulls.  There are no booleans.  There are no numbers.  There are no references, type annotations, or alternative notations for the same structure.
+
+As a result, LAMOS is far easier to read and to type than JSON, but far easier to construct and parse than YAML.
 
 This JavaScript implementation exposes an API of the built-in `JSON` object:
 
