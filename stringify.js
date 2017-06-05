@@ -19,18 +19,29 @@ var repeat = String.prototype.repeat
     return returned
   }
 
-function recurse (data, indent, sortKeys) {
+function recurse (data, indent, sortKeys, withinList) {
   var prefix = repeat('  ', indent)
   if (Array.isArray(data)) {
     return data
-      .map(function (element) {
+      .map(function (element, index) {
+        var firstElement = index === 0
         if (typeof element === 'string') {
-          return prefix + '- ' + element
+          if (withinList && firstElement) {
+            return '- ' + element
+          } else {
+            return prefix + '- ' + element
+          }
         } else {
-          return (
-            prefix + '-\n' +
-            recurse(element, indent + 1, sortKeys)
-          )
+          if (withinList && firstElement) {
+            return (
+              '- ' + recurse(element, indent + 1, sortKeys, true)
+            )
+          } else {
+            return (
+              prefix + '- ' +
+              recurse(element, indent + 1, sortKeys, true)
+            )
+          }
         }
       })
       .join('\n')
@@ -42,15 +53,27 @@ function recurse (data, indent, sortKeys) {
           .sort()
         : Object.keys(data)
     )
-      .map(function (key) {
+      .map(function (key, index) {
         var value = data[key]
+        var firstElement = index === 0
         if (typeof value === 'string') {
-          return prefix + key + ': ' + value
+          if (withinList && firstElement) {
+            return key + ': ' + value
+          } else {
+            return prefix + key + ': ' + value
+          }
         } else {
-          return (
-            prefix + key + ':\n' +
-            recurse(value, indent + 1, sortKeys)
-          )
+          if (withinList && firstElement) {
+            return (
+              key + ':\n' +
+              recurse(value, indent + 1, sortKeys, false)
+            )
+          } else {
+            return (
+              prefix + key + ':\n' +
+              recurse(value, indent + 1, sortKeys, false)
+            )
+          }
         }
       })
       .join('\n')

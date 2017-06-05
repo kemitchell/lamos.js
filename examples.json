@@ -46,19 +46,16 @@
   {
     "name": "tricky list",
     "lamos": [
-      "-",
-      "  -",
-      "    -",
-      "      - x",
+      "- - - w",
+      "    - x",
       "  - y",
       "- z"
     ],
     "js": [
       [
         [
-          [
-            "x"
-          ]
+          "w",
+          "x"
         ],
         "y"
       ],
@@ -69,8 +66,7 @@
     "name": "map containing list of maps",
     "lamos": [
       "a:",
-      "  -",
-      "    b: y",
+      "  - b: y",
       "    c: z"
     ],
     "js": {
@@ -166,8 +162,7 @@
     "name": "list containing list",
     "lamos": [
       "- x",
-      "-",
-      "  - y",
+      "- - y",
       "  - z"
     ],
     "js": [
@@ -182,37 +177,27 @@
     "name": "Beatles and Stones",
     "lamos": [
       "Beatles:",
-      "  -",
-      "    name: John",
+      "  - name: John",
       "    plays: bass",
-      "  -",
-      "    name: Paul",
+      "  - name: Paul",
       "    plays: guitar",
-      "  -",
-      "    name: George",
+      "  - name: George",
       "    plays: guitar",
-      "  -",
-      "    name: Ringo",
+      "  - name: Ringo",
       "    plays: guitar",
       "",
       "Rolling Stones:",
-      "  -",
-      "    name: Brian",
+      "  - name: Brian",
       "    plays: guitar",
-      "  -",
-      "    name: Mick",
+      "  - name: Mick",
       "    plays: vocals",
-      "  -",
-      "    name: Keith",
+      "  - name: Keith",
       "    plays: guitar",
-      "  -",
-      "    name: Bill",
+      "  - name: Bill",
       "    plays: bass",
-      "  -",
-      "    name: Charlie",
+      "  - name: Charlie",
       "    plays: drums",
-      "  -",
-      "    name: Ian",
+      "  - name: Ian",
       "    plays: piano"
     ],
     "js": {
@@ -334,8 +319,7 @@
     "name": "list item containing map within map",
     "lamos": [
       "a: x",
-      "-",
-      "  b: y",
+      "- b: y",
       "  c: z"
     ],
     "error": "Line 2 is a list item within a map."
@@ -348,5 +332,55 @@
       "  - z"
     ],
     "error": "Line 2 is a map item within a list."
+  },
+  {
+    "name": "map as second item within list",
+    "lamos": [
+      "- w",
+      "- a:",
+      "    - y",
+      "- z"
+    ],
+    "tokens": [
+      {
+        "start": "list"
+      },
+      {
+        "string": "w"
+      },
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      {
+        "start": "list"
+      },
+      {
+        "string": "y"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      },
+      {
+        "string": "z"
+      },
+      {
+        "end": "list"
+      }
+    ],
+    "js": [
+      "w",
+      {
+        "a": [
+          "y"
+        ]
+      },
+      "z"
+    ]
   }
 ]

@@ -12,10 +12,7 @@ indentation:
 # The parser ignores blank lines.
 nesting:
   - list item
-  # You must start a new line and indent
-  # for maps within lists.
-  -
-    item key: and value
+  - item key: and value
     another key: and another value
     still another:
       - with a list!

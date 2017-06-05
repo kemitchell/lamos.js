@@ -69,6 +69,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
   state.lastIndent = indent
 
+  var split
   // List Item
   if (startsWith(content, '- ')) {
     if (state.stack[0] === 'map') {
@@ -79,16 +80,33 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       state.stack[0] = 'list'
       emitToken({start: 'list'})
     }
-    emitToken({string: content.substring(2)})
-  // List Item Containing Map
-  } else if (content === '-') {
-    if (state.stack[0] === 'map') {
-      throw new Error(
-        'Line ' + number + ' is a list item within a map.'
-      )
-    } else if (state.stack[0] === null) {
-      state.stack[0] = 'list'
+    var offset = 2
+    // e.g.: "- - - - x"
+    while (startsWith(content.substring(offset), '- ')) {
+      state.lastIndent++
+      state.stack.unshift('list')
       emitToken({start: 'list'})
+      offset += 2
+    }
+    // e.g.
+    // - - - - a:
+    //           - x
+    if (endsWith(content, ':')) {
+      state.lastIndent++
+      state.stack.unshift('map')
+      emitToken({start: 'map'})
+      emitToken({key: content.substring(offset, content.length - 1)})
+    } else {
+      split = content.substring(offset).split(': ', 2)
+      // e.g. "- - - - a: x"
+      if (split.length === 2) {
+        state.lastIndent++
+        state.stack.unshift('map')
+        emitToken({start: 'map'})
+        emitToken({key: split[0]})
+        offset += split[0].length + ': '.length
+      }
+      emitToken({string: content.substring(offset)})
     }
   // Map Containing List Item
   } else if (endsWith(content, ':')) {
@@ -103,7 +121,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     emitToken({key: content.substr(0, content.length - 1)})
   // Map Key-String Pair
   } else {
-    var split = content.split(': ', 2)
+    split = content.split(': ', 2)
     var key = split[0]
     if (state.stack[0] === 'list') {
       throw new Error(
