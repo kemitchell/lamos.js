@@ -28,12 +28,7 @@ function recurse (data, indent, sortKeys, withinList) {
     return data
       .map(function (element, index) {
         var firstElement = index === 0
-        var type = typeof element
-        if (element === null) {
-          element = 'null'
-        } else if (type === 'boolean' || type === 'number') {
-          element = element.toString()
-        }
+        element = coerce(element)
         if (typeof element === 'string') {
           if (element.length === 0) {
             throw new Error('Cannot serialize empty string.')
@@ -60,6 +55,7 @@ function recurse (data, indent, sortKeys, withinList) {
   } else {
     var keys = Object.keys(data)
     if (keys.length === 0) {
+      console.log('%s is %j', 'data', data)
       throw new Error('Cannot serialize empty object.')
     }
     return (
@@ -70,7 +66,7 @@ function recurse (data, indent, sortKeys, withinList) {
         : keys
     )
       .map(function (key, index) {
-        var value = data[key]
+        var value = coerce(data[key])
         var firstElement = index === 0
         if (typeof value === 'string') {
           if (withinList && firstElement) {
@@ -93,5 +89,18 @@ function recurse (data, indent, sortKeys, withinList) {
         }
       })
       .join('\n')
+  }
+}
+
+function coerce (value) {
+  if (value === null) {
+    return 'null'
+  } else {
+    var type = typeof value
+    if (type === 'boolean' || type === 'number') {
+      return value.toString()
+    } else {
+      return value
+    }
   }
 }
