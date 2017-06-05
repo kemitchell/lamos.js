@@ -4,5 +4,6 @@ node_js: node
 sudo: false
 script:
 - npm run coverage
+- npm run readme
 - npm run lint
 - npm run prepublish
