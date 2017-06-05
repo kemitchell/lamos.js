@@ -1,4 +1,5 @@
-Lists of Maps and Strings (LAMOS) is a very simple, plain-text data serialization format:
+Lists of Maps and Strings (LAMOS) is a very simple, plain-text data
+serialization format:
 
 ```lamos
 # This is a comment.
@@ -27,13 +28,18 @@ nesting:
   - z
 ```
 
-There is just one datatype: raw, non-empty string.  Strings appear in just two structures: sequential lists and key-value maps.
+There is just one datatype: raw, non-empty string. Strings appear in
+just two structures: sequential lists and key-value maps.
 
-That's it.  There are no nulls.  There are no booleans.  There are no numbers.  There are no references, type annotations, or alternative notations for the same structure.
+That's it. There are no nulls. There are no booleans. There are no
+numbers. There are no references, type annotations, or alternative
+notations for the same structure.
 
-As a result, LAMOS is far easier to read and to type than JSON, but far easier to construct and parse than YAML.
+As a result, LAMOS is far easier to read and to type than JSON, but far
+easier to construct and parse than YAML.
 
-This JavaScript implementation exposes an API of the built-in `JSON` object:
+This JavaScript implementation exposes an API of the built-in `JSON`
+object:
 
 ```javascript
 var lamos = require('lamos')
@@ -66,7 +72,10 @@ assert.equal(
 )
 ```
 
-If you plan to hash, sign, or perform other bitwise operations on LAMOS markup, use `lamos.stableStringify`, inspired by [json-stable-stringify](https://www.npmjs.com/package/json-stable-stringify), to sort map keys in stable order:
+If you plan to hash, sign, or perform other bitwise operations
+on LAMOS markup, use `lamos.stableStringify`, inspired by
+[json-stable-stringify](https://www.npmjs.com/package/json-stable-stringify),
+to sort map keys in stable order:
 
 ```javascript
 assert.equal(
@@ -85,7 +94,8 @@ assert.equal(
 )
 ```
 
-For consuming streams, use `lamos.concat`, inspired by [concat-stream](https://www.npmjs.com/package/concat-stream):
+For consuming streams, use `lamos.concat`, inspired by
+[concat-stream](https://www.npmjs.com/package/concat-stream):
 
 ```javascript
 var stringToStream = require('string-to-stream')
@@ -110,7 +120,8 @@ pump(
 )
 ```
 
-The API also exposes a constructor for Node.js transform streams that parse markup and emit tokens, ideal for processing long streams:
+The API also exposes a constructor for Node.js transform streams that
+parse markup and emit tokens, ideal for processing long streams:
 
 ```javascript
 var concatStream = require('concat-stream')
@@ -143,7 +154,8 @@ pump(
 )
 ```
 
-A constructor is also available for efficient transformation from LAMOS to JSON:
+A constructor is also available for efficient transformation streams
+from LAMOS to JSON:
 
 ```javascript
 pump(
@@ -163,4 +175,6 @@ pump(
 )
 ```
 
-The npm package installs two bin scripts: `lamos-to-json` and `json-to-lamos`.  Both read from standard input and write to standard output.
+The npm package installs two bin scripts: `lamos-to-json` and
+`json-to-lamos`. Both read from standard input and write to standard
+output.
