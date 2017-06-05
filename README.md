@@ -1,4 +1,4 @@
-Lists of Maps and Strings (LAMOS) is a very simple, plain-text data
+Lists and Maps of Strings (LAMOS) is a very simple, plain-text data
 serialization format:
 
 ```lamos
