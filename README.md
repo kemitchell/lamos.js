@@ -79,7 +79,7 @@ to sort map keys in stable order:
 
 ```javascript
 assert.equal(
-  lamos.stableStringif(
+  lamos.stableStringify(
     {
       c: 'z',
       b: 'y',
