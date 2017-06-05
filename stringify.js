@@ -34,9 +34,9 @@ function recurse (data, indent, sortKeys, withinList) {
             throw new Error('Cannot serialize empty string.')
           }
           if (withinList && firstElement) {
-            return '- ' + element
+            return '- ' + escapeValue(element)
           } else {
-            return prefix + '- ' + element
+            return prefix + '- ' + escapeValue(element)
           }
         } else {
           if (withinList && firstElement) {
@@ -55,7 +55,6 @@ function recurse (data, indent, sortKeys, withinList) {
   } else {
     var keys = Object.keys(data)
     if (keys.length === 0) {
-      console.log('%s is %j', 'data', data)
       throw new Error('Cannot serialize empty object.')
     }
     return (
@@ -90,6 +89,15 @@ function recurse (data, indent, sortKeys, withinList) {
       })
       .join('\n')
   }
+}
+
+function escapeValue (string) {
+  return string
+    // Any unescaped ": " would denote a map pair.
+    .replace(/: /g, '\\: ')
+    // A leading, unescaped "- " would denote a nested list
+    // and item.
+    .replace(/^- /, '\\- ')
 }
 
 function coerce (value) {

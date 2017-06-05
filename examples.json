@@ -382,5 +382,95 @@
       },
       "z"
     ]
+  },
+  {
+    "name": "escaped colon",
+    "lamos": [
+      "- a\\: b"
+    ],
+    "tokens": [
+      {
+        "start": "list"
+      },
+      {
+        "string": "a: b"
+      },
+      {
+        "end": "list"
+      }
+    ],
+    "js": [
+      "a: b"
+    ]
+  },
+  {
+    "name": "colon at start",
+    "lamos": [
+      "- : b"
+    ],
+    "tokens": [
+      {
+        "start": "list"
+      },
+      {
+        "string": ": b"
+      },
+      {
+        "end": "list"
+      }
+    ],
+    "js": [
+      ": b"
+    ]
+  },
+  {
+    "name": "escaped hyphen",
+    "lamos": [
+      "- \\- a"
+    ],
+    "js": [
+      "- a"
+    ]
+  },
+  {
+    "name": "longer key",
+    "lamos": [
+      "- abacus: x",
+      "  b: y"
+    ],
+    "js": [
+      {
+        "abacus": "x",
+        "b": "y"
+      }
+    ]
+  },
+  {
+    "name": "escaped map pair",
+    "lamos": [
+      "a: x",
+      "b\\: y"
+    ],
+    "error": "Invalid map pair on line 2."
+  },
+  {
+    "name": "item ends with colon-space",
+    "lamos": [
+      "- a: "
+    ],
+    "js": [
+      "a: "
+    ]
+  },
+  {
+    "name": "escaped hyphen between hyphens",
+    "lamos": [
+      "- - \\- - a"
+    ],
+    "js": [
+      [
+        "- - a"
+      ]
+    ]
   }
 ]

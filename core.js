@@ -25,6 +25,8 @@ var endsWith = String.prototype.endsWith
     return string.lastIndexOf(substring) === string.length - 1
   }
 
+var ESCAPE = '\\'
+
 exports.tokenizeLine = function (state, line, number, emitToken) {
   line = line.toString()
   // Ignore empty lines.
@@ -69,7 +71,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
   state.lastIndent = indent
 
-  var split
+  var parsedValue
   // List Item
   if (startsWith(content, '- ')) {
     if (state.stack[0] === 'map') {
@@ -97,16 +99,23 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({start: 'map'})
       emitToken({key: content.substring(offset, content.length - 1)})
     } else {
-      split = content.substring(offset).split(': ', 2)
+      parsedValue = parseValue(content.substring(offset))
       // e.g. "- - - - a: x"
-      if (split.length === 2) {
+      if (parsedValue.key) {
         state.lastIndent++
         state.stack.unshift('map')
         emitToken({start: 'map'})
-        emitToken({key: split[0]})
-        offset += split[0].length + ': '.length
+        emitToken({key: parsedValue.key})
+        emitToken({string: parsedValue.string})
+        offset += parsedValue.string.length + ': '.length
+      } else {
+        emitToken({
+          // Remove any escape code to avoid list item syntax.
+          string: startsWith(parsedValue.string, ESCAPE + '- ')
+            ? parsedValue.string.substring(1)
+            : parsedValue.string
+        })
       }
-      emitToken({string: content.substring(offset)})
     }
   // Map Containing List Item
   } else if (endsWith(content, ':')) {
@@ -121,8 +130,11 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     emitToken({key: content.substr(0, content.length - 1)})
   // Map Key-String Pair
   } else {
-    split = content.split(': ', 2)
-    var key = split[0]
+    parsedValue = parseValue(content)
+    if (!parsedValue.hasOwnProperty('key')) {
+      throw new Error('Invalid map pair on line ' + number + '.')
+    }
+    var key = parsedValue.key
     if (state.stack[0] === 'list') {
       throw new Error(
         'Line ' + number + ' is a map item within a list.'
@@ -132,7 +144,50 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({start: 'map'})
     }
     emitToken({key: key})
-    emitToken({string: split[1]})
+    emitToken({string: parsedValue.string})
+  }
+}
+
+function parseValue (string) {
+  var index = string.indexOf(': ')
+  if (index === -1) {
+    return {string: string}
+  }
+  var offset = 0
+  while (
+    index !== -1 &&
+    (
+      // e.g. ": a"
+      index === 0 ||
+      // e.g. "a\\: x"
+      string[index - 1] === ESCAPE
+    )
+  ) {
+    // If an escape prevents a match, drop the escape
+    // character from the string value.
+    if (string[index - 1] === ESCAPE) {
+      string = (
+        string.substring(0, index - 1) +
+        string.substring(index)
+      )
+    }
+    // Look for another ": ".
+    offset += index + 2 // 2 = ': '.length
+    index = string.indexOf(': ', offset)
+  }
+  if (index === -1) {
+    return {string: string}
+  } else {
+    // e.g. "- blah: "
+    // (Note the terminal space.)
+    if (index + 2 === string.length) {
+      return {string: string}
+    } else {
+      return {
+        key: string.substring(0, index),
+        string: string.substring(index + 2)
+      }
+    }
   }
 }
 
