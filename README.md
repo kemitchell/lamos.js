@@ -1,21 +1,30 @@
 Lists of Maps and Strings (LAMOS) is a very simple, plain-text data serialization format:
 
 ```lamos
-format:
-  - plain-text
-  - line-delimited
-indentation:
-  - spaces
-  - two at a time
 # This is a comment.
 
 # The parser ignores blank lines.
-nesting:
+format:
+  - plain-text
+  - line-delimited
+
+indentation:
+  - spaces
+  - two at a time
+
+structures:
   - list item
-  - item key: and value
-    another key: and another value
-    still another:
-      - with a list!
+  - key: value
+    another key: another value
+    still another key:
+      - containing a list!
+      - of two items!
+
+nesting:
+  - - - a:
+          - x
+    - b: y
+  - z
 ```
 
 There is just one datatype: raw, non-empty string.  Strings appear in just two structures: sequential lists and key-value maps.
