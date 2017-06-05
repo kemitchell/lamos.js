@@ -114,3 +114,23 @@ pump(
   })
 )
 ```
+
+A constructor is also available for efficient transformation from LAMOS to JSON:
+
+```javascript
+pump(
+  stringToStream([
+    '- a: x',
+    '- b: y',
+    '  c:',
+    '    - z'
+  ].join('\n')),
+  lamos.toJSON(),
+  concatStream(function (buffer) {
+    assert.equal(
+      buffer.toString(),
+      '[{"a":"x"},{"b":"y","c":["z"]}]'
+    )
+  })
+)
+```
