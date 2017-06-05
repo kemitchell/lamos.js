@@ -57,6 +57,25 @@ assert.equal(
 )
 ```
 
+If you plan to hash, sign, or perform other bitwise operations on LAMOS markup, use `lamos.stableStringify`, inspired by [json-stable-stringify](https://www.npmjs.com/package/json-stable-stringify), to sort map keys in stable order:
+
+```javascript
+assert.equal(
+  lamos.stableStringif(
+    {
+      c: 'z',
+      b: 'y',
+      a: 'x'
+    }
+  ),
+  [
+    'a: x',
+    'b: y',
+    'c: z'
+  ].join('\n')
+)
+```
+
 For consuming streams, use `lamos.concat`, inspired by [concat-stream](https://www.npmjs.com/package/concat-stream):
 
 ```javascript
