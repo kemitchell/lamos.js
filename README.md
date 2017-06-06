@@ -94,38 +94,13 @@ assert.equal(
 )
 ```
 
-For consuming streams, use `lamos.concat`, inspired by
-[concat-stream](https://www.npmjs.com/package/concat-stream):
-
-```javascript
-var stringToStream = require('string-to-stream')
-var pump = require('pump')
-
-pump(
-  stringToStream(
-    [
-      'a: x',
-      'b: y'
-    ].join('\n')
-  ),
-  lamos.concat(function (parsed) {
-    assert.deepEqual(
-      parsed,
-      {
-        a: 'x',
-        b: 'y'
-      }
-    )
-  })
-)
-```
-
 The API also exposes a constructor for Node.js transform streams that
 parse markup and emit tokens, ideal for processing long streams:
 
 ```javascript
 var concatStream = require('concat-stream')
 var pump = require('pump')
+var stringToStream = require('string-to-stream')
 
 pump(
   stringToStream([

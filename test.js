@@ -25,34 +25,6 @@ tape('parse', function (suite) {
   })
 })
 
-tape('concat', function (suite) {
-  examples.forEach(function (example) {
-    suite.test(example.name, function (test) {
-      if (example.js) {
-        pump(
-          stringToStream(example.lamos),
-          lamos.concat(function (parsed) {
-            test.deepEqual(parsed, example.js)
-            test.end()
-          })
-        )
-      } else {
-        pump(
-          stringToStream(example.lamos),
-          lamos.concat(/* istanbul ignore next */ function (parsed) {
-            test.fail()
-            test.end()
-          }),
-          function (error) {
-            test.equal(error.message, example.error)
-            test.end()
-          }
-        )
-      }
-    })
-  })
-})
-
 tape('tokenizer', function (suite) {
   examples.forEach(function (example) {
     if (example.tokens) {
@@ -66,6 +38,23 @@ tape('tokenizer', function (suite) {
           })
         )
       })
+    } else if (example.error) {
+      suite.test(example.name, function (test) {
+        pump(
+          stringToStream(example.lamos),
+          lamos.tokenizer(),
+          concat(/* istanbul ignore next */ function () {
+            test.fail()
+            test.end()
+          }),
+          function (error) {
+            test.equal(
+              error.message, example.error
+            )
+            test.end()
+          }
+        )
+      })
     }
   })
 })
@@ -76,8 +65,10 @@ tape('round trips', function (suite) {
       suite.test(example.name, function (test) {
         pump(
           stringToStream(lamos.stringify(example.js)),
-          lamos.concat(function (parsed) {
-            test.deepEqual(parsed, example.js)
+          concat(function (buffer) {
+            test.deepEqual(
+              lamos.parse(buffer.toString()), example.js
+            )
             test.end()
           })
         )
@@ -92,8 +83,10 @@ tape('stable round trips', function (suite) {
       suite.test(example.name, function (test) {
         pump(
           stringToStream(lamos.stableStringify(example.js)),
-          lamos.concat(function (parsed) {
-            test.deepEqual(parsed, example.js)
+          concat(function (buffer) {
+            test.deepEqual(
+              lamos.parse(buffer.toString()), example.js
+            )
             test.end()
           })
         )
