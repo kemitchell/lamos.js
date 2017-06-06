@@ -174,7 +174,3 @@ pump(
   })
 )
 ```
-
-The npm package installs two bin scripts: `lamos-to-json` and
-`json-to-lamos`. Both read from standard input and write to standard
-output.

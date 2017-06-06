@@ -3,10 +3,6 @@
   "description": "serialize lists and maps of strings",
   "version": "2.0.2",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
-  "bin": {
-    "lamos-to-json": "./lamos-to-json",
-    "json-to-lamos": "./json-to-lamos"
-  },
   "dependencies": {
     "flush-write-stream": "^1.0.2",
     "pump": "^1.0.2",

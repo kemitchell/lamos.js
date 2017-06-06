@@ -1,9 +1,0 @@
-#!/usr/bin/env node
-require('pump')(
-  process.stdin,
-  require('./to-json')(),
-  process.stdout,
-  function (error) {
-    throw error
-  }
-)
