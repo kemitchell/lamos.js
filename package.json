@@ -20,6 +20,9 @@
     "standard-markdown": "^2.3.0",
     "tape": "^4.6.3"
   },
+  "keywords": [
+    "lamos"
+  ],
   "license": "MIT",
   "repository": "kemitchell/lamos.js",
   "scripts": {
