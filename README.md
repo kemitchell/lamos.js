@@ -128,3 +128,7 @@ pump(
   })
 )
 ```
+
+A number of streaming, command-line, and other packages with the
+[`lamos` npm keyword](https://www.npmjs.com/browse/keyword/lamos)
+are also available.
