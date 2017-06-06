@@ -111,23 +111,6 @@ tape('stable stringify sorting', function (test) {
   test.end()
 })
 
-tape('streaming round trips', function (suite) {
-  examples.forEach(function (example) {
-    if (example.js) {
-      suite.test(example.name, function (test) {
-        pump(
-          stringToStream(lamos.stringify(example.js)),
-          lamos.toJSON(),
-          concat(function (buffer) {
-            test.deepEqual(JSON.parse(buffer), example.js)
-            test.end()
-          })
-        )
-      })
-    }
-  })
-})
-
 tape('JSON coercion', function (suite) {
   coercion('null', null, 'null')
   coercion('true', true, 'true')
