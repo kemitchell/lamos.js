@@ -21,12 +21,12 @@ tape('parse', function (suite) {
         if (example.lamos) {
           test.throws(function () {
             lamos.parse(example.lamos)
-          }, example.error)
+          }, new RegExp(example.error))
           test.end()
         } else if (example.js) {
           test.throws(function () {
             lamos.stringify(example.js)
-          }, example.error)
+          }, new RegExp(example.error))
           test.end()
         }
       }

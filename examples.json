@@ -478,6 +478,6 @@
     "js": [
       "this\nthat"
     ],
-    "error": "String contains newline"
+    "error": "Cannot serialize string with newline"
   }
 ]
