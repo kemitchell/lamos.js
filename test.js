@@ -5,21 +5,30 @@ var stringToStream = require('string-to-stream')
 var tape = require('tape')
 
 var examples = require('./examples').map(function (example) {
-  example.lamos = example.lamos.join('\n')
+  if (example.lamos) {
+    example.lamos = example.lamos.join('\n')
+  }
   return example
 })
 
 tape('parse', function (suite) {
   examples.forEach(function (example) {
     suite.test(example.name, function (test) {
-      if (example.js) {
+      if (example.js && example.lamos) {
         test.deepEqual(lamos.parse(example.lamos), example.js)
         test.end()
-      } else {
-        test.throws(function () {
-          lamos.parse(example.lamos)
-        }, example.error)
-        test.end()
+      } else if (example.error) {
+        if (example.lamos) {
+          test.throws(function () {
+            lamos.parse(example.lamos)
+          }, example.error)
+          test.end()
+        } else if (example.js) {
+          test.throws(function () {
+            lamos.stringify(example.js)
+          }, example.error)
+          test.end()
+        }
       }
     })
   })
@@ -39,29 +48,31 @@ tape('tokenizer', function (suite) {
         )
       })
     } else if (example.error) {
-      suite.test(example.name, function (test) {
-        pump(
-          stringToStream(example.lamos),
-          lamos.tokenizer(),
-          concat(/* istanbul ignore next */ function () {
-            test.fail()
-            test.end()
-          }),
-          function (error) {
-            test.equal(
-              error.message, example.error
-            )
-            test.end()
-          }
-        )
-      })
+      if (example.lamos) {
+        suite.test(example.name, function (test) {
+          pump(
+            stringToStream(example.lamos),
+            lamos.tokenizer(),
+            concat(/* istanbul ignore next */ function () {
+              test.fail()
+              test.end()
+            }),
+            function (error) {
+              test.equal(
+                error.message, example.error
+              )
+              test.end()
+            }
+          )
+        })
+      }
     }
   })
 })
 
 tape('round trips', function (suite) {
   examples.forEach(function (example) {
-    if (example.js) {
+    if (example.js && !example.error) {
       suite.test(example.name, function (test) {
         pump(
           stringToStream(lamos.stringify(example.js)),
@@ -79,7 +90,7 @@ tape('round trips', function (suite) {
 
 tape('stable round trips', function (suite) {
   examples.forEach(function (example) {
-    if (example.js) {
+    if (example.js && !example.error) {
       suite.test(example.name, function (test) {
         pump(
           stringToStream(lamos.stableStringify(example.js)),

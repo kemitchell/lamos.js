@@ -32,6 +32,8 @@ function recurse (data, indent, sortKeys, withinList) {
         if (typeof element === 'string') {
           if (element.length === 0) {
             throw new Error('Cannot serialize empty string.')
+          } else if (element.indexOf('\n') !== -1) {
+            throw new Error('Cannot serialize string with newline')
           }
           if (withinList && firstElement) {
             return '- ' + escapeValue(element)

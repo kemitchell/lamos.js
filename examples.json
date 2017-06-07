@@ -472,5 +472,12 @@
         "- - a"
       ]
     ]
+  },
+  {
+    "name": "newline in string",
+    "js": [
+      "this\nthat"
+    ],
+    "error": "String contains newline"
   }
 ]
