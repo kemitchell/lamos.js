@@ -34,7 +34,8 @@ just two structures: sequential lists and key-value maps.
 
 That's it. There are no nulls. There are no booleans. There are no
 numbers. There are no references, type annotations, or alternative
-notations for the same structure.
+notations for the same structure. There are no empty strings, empty
+lists, or empty maps.
 
 As a result, LAMOS is far easier to read and to type than JSON, but far
 easier to construct and parse than YAML.
