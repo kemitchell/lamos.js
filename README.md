@@ -15,8 +15,9 @@ indentation:
 
 structures:
   - list item
-  - key: value
-    another key: another value
+  - key:
+      another key: another value
+      yet another key: yet another value
     still another key:
       - containing a list!
       - of two items!
