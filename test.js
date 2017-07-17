@@ -53,10 +53,7 @@ tape('tokenizer', function (suite) {
           pump(
             stringToStream(example.lamos),
             lamos.tokenizer(),
-            concat(/* istanbul ignore next */ function () {
-              test.fail()
-              test.end()
-            }),
+            concat(function () {}),
             function (error) {
               test.equal(
                 error.message, example.error
