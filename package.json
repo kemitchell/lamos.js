@@ -29,7 +29,7 @@
     "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
     "examples": "node test.js && defence -i javascript < README.md | replace-require-self | node",
     "lint": "standard && standard-markdown",
-    "precoverage": "istanbul cover -- test.js",
+    "precoverage": "istanbul cover -x test.js -- test.js",
     "prepublish": "depcheck",
     "readme": "defence -i javascript < README.md | replace-require-self | node",
     "test": "npm run examples && npm run readme"
