@@ -22,13 +22,12 @@ var endsWith = String.prototype.endsWith
   }
   /* istanbul ignore next */
   : function (string, substring) {
-    return string.lastIndexOf(substring) === string.length - 1
+    return string.lastIndexOf(substring) === string.length - substring.length
   }
 
 var ESCAPE = '\\'
 
 exports.tokenizeLine = function (state, line, number, emitToken) {
-  line = line.toString()
   // Ignore empty lines.
   if (line.trim().length === 0) {
     return
@@ -93,7 +92,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     // e.g.
     // - - - - a:
     //           - x
-    if (endsWith(content, ':')) {
+    if (endsWith(content, ':') && !endsWith(content, ESCAPE + ':')) {
       state.lastIndent++
       state.stack.unshift('map')
       emitToken({start: 'map'})
@@ -118,7 +117,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       }
     }
   // Map Containing List Item
-  } else if (endsWith(content, ':')) {
+  } else if (endsWith(content, ':') && !endsWith(ESCAPE + ':')) {
     if (state.stack[0] === 'list') {
       throw new Error(
         'Line ' + number + ' is a map item within a list.'
@@ -151,7 +150,11 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
 function parseValue (string) {
   var index = string.indexOf(': ')
   if (index === -1) {
-    return {string: string}
+    if (endsWith(string, ESCAPE + ':')) {
+      return {string: string.slice(0, string.length - 2) + ':'}
+    } else {
+      return {string: string}
+    }
   }
   var offset = 0
   while (
@@ -159,7 +162,7 @@ function parseValue (string) {
     (
       // e.g. ": a"
       index === 0 ||
-      // e.g. "a\\: x"
+      // e.g. "a\: x"
       string[index - 1] === ESCAPE
     )
   ) {
@@ -178,10 +181,14 @@ function parseValue (string) {
   if (index === -1) {
     return {string: string}
   } else {
-    // e.g. "- blah: "
-    // (Note the terminal space.)
     if (index + 2 === string.length) {
-      return {string: string}
+      // e.g. "- blah: "
+      // (Note the terminal space.)
+      if (endsWith(string, ESCAPE + ':')) {
+        return {string: string.slice(0, string.length - 2) + ':'}
+      } else {
+        return {string: string}
+      }
     } else {
       return {
         key: string.substring(0, index),

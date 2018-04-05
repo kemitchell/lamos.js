@@ -97,6 +97,8 @@ function escapeValue (string) {
   return string
     // Any unescaped ": " would denote a map pair.
     .replace(/: /g, '\\: ')
+    // Any unescaped ":" at end would denote a map key.
+    .replace(/:$/g, '\\:')
     // A leading, unescaped "- " would denote a nested list
     // and item.
     .replace(/^- /, '\\- ')

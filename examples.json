@@ -404,6 +404,41 @@
     ]
   },
   {
+    "name": "escaped colon at end of line",
+    "lamos": [
+      "a:\n  - b\\:\n  - c"
+    ],
+    "tokens": [
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      {
+        "start": "list"
+      },
+      {
+        "string": "b:"
+      },
+      {
+        "string": "c"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      }
+    ],
+    "js": {
+      "a": [
+        "b:",
+        "c"
+      ]
+    }
+  },
+  {
     "name": "colon at start",
     "lamos": [
       "- : b"
