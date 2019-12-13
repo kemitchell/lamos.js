@@ -1,3 +1,5 @@
+var has = require('has')
+
 exports.tokenizerState = function () {
   return {
     stack: [null],
@@ -65,7 +67,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     // indented out.
     while (indent < state.lastIndent) {
       state.lastIndent--
-      emitToken({end: state.stack.shift()})
+      emitToken({ end: state.stack.shift() })
     }
   }
   state.lastIndent = indent
@@ -79,14 +81,14 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'list'
-      emitToken({start: 'list'})
+      emitToken({ start: 'list' })
     }
     var offset = 2
     // e.g.: "- - - - x"
     while (startsWith(content.substring(offset), '- ')) {
       state.lastIndent++
       state.stack.unshift('list')
-      emitToken({start: 'list'})
+      emitToken({ start: 'list' })
       offset += 2
     }
     // e.g.
@@ -95,17 +97,17 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     if (endsWith(content, ':') && !endsWith(content, ESCAPE + ':')) {
       state.lastIndent++
       state.stack.unshift('map')
-      emitToken({start: 'map'})
-      emitToken({key: content.substring(offset, content.length - 1)})
+      emitToken({ start: 'map' })
+      emitToken({ key: content.substring(offset, content.length - 1) })
     } else {
       parsedValue = parseValue(content.substring(offset))
       // e.g. "- - - - a: x"
       if (parsedValue.key) {
         state.lastIndent++
         state.stack.unshift('map')
-        emitToken({start: 'map'})
-        emitToken({key: parsedValue.key})
-        emitToken({string: parsedValue.string})
+        emitToken({ start: 'map' })
+        emitToken({ key: parsedValue.key })
+        emitToken({ string: parsedValue.string })
         offset += parsedValue.string.length + ': '.length
       } else {
         emitToken({
@@ -124,13 +126,13 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
-      emitToken({start: 'map'})
+      emitToken({ start: 'map' })
     }
-    emitToken({key: content.substr(0, content.length - 1)})
+    emitToken({ key: content.substr(0, content.length - 1) })
   // Map Key-String Pair
   } else {
     parsedValue = parseValue(content)
-    if (!parsedValue.hasOwnProperty('key')) {
+    if (!has(parsedValue, 'key')) {
       throw new Error('Invalid map pair on line ' + number + '.')
     }
     var key = parsedValue.key
@@ -140,10 +142,10 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       )
     } else if (state.stack[0] === null) {
       state.stack[0] = 'map'
-      emitToken({start: 'map'})
+      emitToken({ start: 'map' })
     }
-    emitToken({key: key})
-    emitToken({string: parsedValue.string})
+    emitToken({ key: key })
+    emitToken({ string: parsedValue.string })
   }
 }
 
@@ -151,9 +153,9 @@ function parseValue (string) {
   var index = string.indexOf(': ')
   if (index === -1) {
     if (endsWith(string, ESCAPE + ':')) {
-      return {string: string.slice(0, string.length - 2) + ':'}
+      return { string: string.slice(0, string.length - 2) + ':' }
     } else {
-      return {string: string}
+      return { string: string }
     }
   }
   var offset = 0
@@ -179,15 +181,15 @@ function parseValue (string) {
     index = string.indexOf(': ', offset)
   }
   if (index === -1) {
-    return {string: string}
+    return { string: string }
   } else {
     if (index + 2 === string.length) {
       // e.g. "- blah: "
       // (Note the terminal space.)
       if (endsWith(string, ESCAPE + ':')) {
-        return {string: string.slice(0, string.length - 2) + ':'}
+        return { string: string.slice(0, string.length - 2) + ':' }
       } else {
-        return {string: string}
+        return { string: string }
       }
     } else {
       return {
@@ -200,7 +202,7 @@ function parseValue (string) {
 
 exports.flushTokenizer = function (state, emitToken) {
   while (state.stack.length > 0) {
-    emitToken({end: state.stack.shift()})
+    emitToken({ end: state.stack.shift() })
   }
 }
 

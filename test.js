@@ -148,12 +148,12 @@ tape('JSON coercion', function (suite) {
         'stableStringify array'
       )
       test.equal(
-        lamos.stringify({a: value}),
+        lamos.stringify({ a: value }),
         'a: ' + lomas,
         'stringify object'
       )
       test.equal(
-        lamos.stableStringify({a: value}),
+        lamos.stableStringify({ a: value }),
         'a: ' + lomas,
         'stableStringify object'
       )
