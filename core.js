@@ -186,8 +186,8 @@ function parseValue (string) {
     if (index + 2 === string.length) {
       // e.g. "- blah: "
       // (Note the terminal space.)
-      if (endsWith(string, ESCAPE + ':')) {
-        return { string: string.slice(0, string.length - 2) + ':' }
+      if (endsWith(string, ESCAPE + ': ')) {
+        return { string: string.slice(0, string.length - 2) + ': ' }
       } else {
         return { string: string }
       }

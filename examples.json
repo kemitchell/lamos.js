@@ -406,7 +406,9 @@
   {
     "name": "escaped colon at end of line",
     "lamos": [
-      "a:\n  - b\\:\n  - c"
+      "a:",
+      "  - b\\: ",
+      "  - c"
     ],
     "tokens": [
       {
@@ -419,7 +421,7 @@
         "start": "list"
       },
       {
-        "string": "b:"
+        "string": "b: "
       },
       {
         "string": "c"
@@ -433,7 +435,7 @@
     ],
     "js": {
       "a": [
-        "b:",
+        "b: ",
         "c"
       ]
     }
