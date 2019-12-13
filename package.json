@@ -12,7 +12,7 @@
     "through2": "^3.0.1"
   },
   "devDependencies": {
-    "concat-stream": "^1.6.0",
+    "concat-stream": "^2.0.0",
     "defence-cli": "^3.0.1",
     "depcheck": "^0.9.1",
     "istanbul": "^0.4.5",
