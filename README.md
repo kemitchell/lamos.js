@@ -47,7 +47,7 @@ object:
 var lamos = require('lamos')
 var assert = require('assert')
 
-assert.deepEqual(
+assert.deepStrictEqual(
   lamos.parse(
     [
       'a: x',
@@ -60,7 +60,7 @@ assert.deepEqual(
   }
 )
 
-assert.equal(
+assert.strictEqual(
   lamos.stringify(
     {
       a: 'x',
@@ -116,15 +116,15 @@ pump(
     assert.deepEqual(
       tokens,
       [
-        {start: 'map'},
-        {key: 'a'},
-        {string: 'x'},
-        {key: 'b'},
-        {start: 'list'},
-        {string: 'y'},
-        {string: 'z'},
-        {end: 'list'},
-        {end: 'map'}
+        { start: 'map' },
+        { key: 'a' },
+        { string: 'x' },
+        { key: 'b' },
+        { start: 'list' },
+        { string: 'y' },
+        { string: 'z' },
+        { end: 'list' },
+        { end: 'map' }
       ]
     )
   })
