@@ -404,7 +404,7 @@
     ]
   },
   {
-    "name": "escaped colon at end of line",
+    "name": "escaped colon-space at end of line",
     "lamos": [
       "a:",
       "  - b\\: ",
@@ -436,6 +436,43 @@
     "js": {
       "a": [
         "b: ",
+        "c"
+      ]
+    }
+  },
+  {
+    "name": "escaped colon at end of line",
+    "lamos": [
+      "a:",
+      "  - b\\:",
+      "  - c"
+    ],
+    "tokens": [
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      {
+        "start": "list"
+      },
+      {
+        "string": "b:"
+      },
+      {
+        "string": "c"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      }
+    ],
+    "js": {
+      "a": [
+        "b:",
         "c"
       ]
     }
