@@ -26,6 +26,13 @@
   ],
   "license": "MIT",
   "repository": "kemitchell/lamos.js",
+  "files": [
+    "core.js",
+    "index.js",
+    "parse.js",
+    "stringify.js",
+    "tokenizer.js"
+  ],
   "scripts": {
     "coverage": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
     "examples": "node test.js && defence -i javascript < README.md | replace-require-self | node",
