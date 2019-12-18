@@ -151,7 +151,13 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
 
 function parseValue (string) {
   var index = string.indexOf(': ')
-  if (index === -1) return { string: string }
+  if (index === -1) {
+    if (endsWith(string, ESCAPE + ':')) {
+      return { string: string.slice(0, string.length - 2) + ':' }
+    } else {
+      return { string: string }
+    }
+  }
   var offset = 0
   while (
     index !== -1 &&
