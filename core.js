@@ -92,23 +92,23 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       offset += 2
     }
     // e.g.
-    // - - - - a:
+    // - - - - a=
     //           - x
-    if (endsWith(content, ':') && !endsWith(content, ESCAPE + ':')) {
+    if (endsWith(content, '=') && !endsWith(content, ESCAPE + '=')) {
       state.lastIndent++
       state.stack.unshift('map')
       emitToken({ start: 'map' })
       emitToken({ key: content.substring(offset, content.length - 1) })
     } else {
       parsedValue = parseValue(content.substring(offset))
-      // e.g. "- - - - a: x"
+      // e.g. "- - - - a=x"
       if (parsedValue.key) {
         state.lastIndent++
         state.stack.unshift('map')
         emitToken({ start: 'map' })
         emitToken({ key: parsedValue.key })
         emitToken({ string: parsedValue.string })
-        offset += parsedValue.string.length + ': '.length
+        offset += parsedValue.string.length + 1
       } else {
         emitToken({
           // Remove any escape code to avoid list item syntax.
@@ -119,7 +119,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       }
     }
   // Map Containing List Item
-  } else if (endsWith(content, ':') && !endsWith(ESCAPE + ':')) {
+  } else if (endsWith(content, '=') && !endsWith(ESCAPE + '=')) {
     if (state.stack[0] === 'list') {
       throw new Error(
         'Line ' + number + ' is a map item within a list.'
@@ -150,10 +150,10 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
 }
 
 function parseValue (string) {
-  var index = string.indexOf(': ')
+  var index = string.indexOf('=')
   if (index === -1) {
-    if (endsWith(string, ESCAPE + ':')) {
-      return { string: string.slice(0, string.length - 2) + ':' }
+    if (endsWith(string, ESCAPE + '=')) {
+      return { string: string.slice(0, string.length - 1) + '=' }
     } else {
       return { string: string }
     }
@@ -162,9 +162,9 @@ function parseValue (string) {
   while (
     index !== -1 &&
     (
-      // e.g. ": a"
+      // e.g. "=a"
       index === 0 ||
-      // e.g. "a\: x"
+      // e.g. "a\= x"
       string[index - 1] === ESCAPE
     )
   ) {
@@ -176,25 +176,25 @@ function parseValue (string) {
         string.substring(index)
       )
     }
-    // Look for another ": ".
-    offset += index + 2 // 2 = ': '.length
-    index = string.indexOf(': ', offset)
+    // Look for another "=".
+    offset += index + 1 // 1 = '='.length
+    index = string.indexOf('=', offset)
   }
   if (index === -1) {
     return { string: string }
   } else {
-    if (index + 2 === string.length) {
-      // e.g. "- blah: "
+    if (index + 1 === string.length) {
+      // e.g. "- blah= "
       // (Note the terminal space.)
-      if (endsWith(string, ESCAPE + ': ')) {
-        return { string: string.slice(0, string.length - 2) + ': ' }
+      if (endsWith(string, ESCAPE + '= ')) {
+        return { string: string.slice(0, string.length - 2) + '= ' }
       } else {
         return { string: string }
       }
     } else {
       return {
         key: string.substring(0, index),
-        string: string.substring(index + 2)
+        string: string.substring(index + 1)
       }
     }
   }

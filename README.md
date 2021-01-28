@@ -5,27 +5,27 @@ serialization format:
 # This is a comment.
 
 # The parser ignores blank lines.
-format:
+format=
   - plain-text
   - line-delimited
 
-indentation:
+indentation=
   - spaces
   - two at a time
 
-structures:
+structures=
   - list item
-  - key:
-      another key: another value
-      yet another key: yet another value
-    still another key:
+  - key=
+      another key=another value
+      yet another key=yet another value
+    still another key=
       - containing a list!
       - of two items!
 
-nesting:
-  - - - a:
+nesting=
+  - - - a=
           - x
-    - b: y
+    - b=y
   - z
 ```
 
@@ -50,8 +50,8 @@ var assert = require('assert')
 assert.deepStrictEqual(
   lamos.parse(
     [
-      'a: x',
-      'b: y'
+      'a=x',
+      'b=y'
     ].join('\n')
   ),
   {
@@ -68,8 +68,8 @@ assert.strictEqual(
     }
   ),
   [
-    'a: x',
-    'b: y'
+    'a=x',
+    'b=y'
   ].join('\n')
 )
 ```
@@ -89,9 +89,9 @@ assert.equal(
     }
   ),
   [
-    'a: x',
-    'b: y',
-    'c: z'
+    'a=x',
+    'b=y',
+    'c=z'
   ].join('\n')
 )
 ```
@@ -106,8 +106,8 @@ var stringToStream = require('string-to-stream')
 
 pump(
   stringToStream([
-    'a: x',
-    'b:',
+    'a=x',
+    'b=',
     '  - y',
     '  - z'
   ].join('\n')),

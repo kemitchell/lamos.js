@@ -2,8 +2,8 @@
   {
     "name": "simple map",
     "lamos": [
-      "a: x",
-      "b: y"
+      "a=x",
+      "b=y"
     ],
     "js": {
       "a": "x",
@@ -13,12 +13,12 @@
   {
     "name": "tricky map",
     "lamos": [
-      "a:",
-      "  b:",
-      "    c: x",
-      "  d:",
-      "    e: y",
-      "f: z"
+      "a=",
+      "  b=",
+      "    c=x",
+      "  d=",
+      "    e=y",
+      "f=z"
     ],
     "js": {
       "a": {
@@ -65,9 +65,9 @@
   {
     "name": "map containing list of maps",
     "lamos": [
-      "a:",
-      "  - b: y",
-      "    c: z"
+      "a=",
+      "  - b=y",
+      "    c=z"
     ],
     "js": {
       "a": [
@@ -116,8 +116,8 @@
   {
     "name": "map containing list",
     "lamos": [
-      "a: x",
-      "b:",
+      "a=x",
+      "b=",
       "  - y",
       "  - z"
     ],
@@ -176,29 +176,29 @@
   {
     "name": "Beatles and Stones",
     "lamos": [
-      "Beatles:",
-      "  - name: John",
-      "    plays: bass",
-      "  - name: Paul",
-      "    plays: guitar",
-      "  - name: George",
-      "    plays: guitar",
-      "  - name: Ringo",
-      "    plays: guitar",
+      "Beatles=",
+      "  - name=John",
+      "    plays=bass",
+      "  - name=Paul",
+      "    plays=guitar",
+      "  - name=George",
+      "    plays=guitar",
+      "  - name=Ringo",
+      "    plays=guitar",
       "",
-      "Rolling Stones:",
-      "  - name: Brian",
-      "    plays: guitar",
-      "  - name: Mick",
-      "    plays: vocals",
-      "  - name: Keith",
-      "    plays: guitar",
-      "  - name: Bill",
-      "    plays: bass",
-      "  - name: Charlie",
-      "    plays: drums",
-      "  - name: Ian",
-      "    plays: piano"
+      "Rolling Stones=",
+      "  - name=Brian",
+      "    plays=guitar",
+      "  - name=Mick",
+      "    plays=vocals",
+      "  - name=Keith",
+      "    plays=guitar",
+      "  - name=Bill",
+      "    plays=bass",
+      "  - name=Charlie",
+      "    plays=drums",
+      "  - name=Ian",
+      "    plays=piano"
     ],
     "js": {
       "Beatles": [
@@ -250,9 +250,9 @@
   {
     "name": "ignores blank lines",
     "lamos": [
-      "a: x",
+      "a=x",
       "",
-      "b: y",
+      "b=y",
       "",
       ""
     ],
@@ -264,9 +264,9 @@
   {
     "name": "ignores comment lines",
     "lamos": [
-      "a: x",
+      "a=x",
       "# blah blah",
-      "b: y",
+      "b=y",
       "# blah blah",
       "# blah blah"
     ],
@@ -278,7 +278,7 @@
   {
     "name": "invalid indentation",
     "lamos": [
-      "a:",
+      "a=",
       " - x"
     ],
     "error": "Line 2 is not indented with an even number of spaces."
@@ -286,7 +286,7 @@
   {
     "name": "indented too far",
     "lamos": [
-      "a:",
+      "a=",
       "    - x"
     ],
     "error": "Line 2 is indented too far."
@@ -294,7 +294,7 @@
   {
     "name": "list item within map",
     "lamos": [
-      "a: x",
+      "a=x",
       "- y"
     ],
     "error": "Line 2 is a list item within a map."
@@ -302,7 +302,7 @@
   {
     "name": "list item within map",
     "lamos": [
-      "a: x",
+      "a=x",
       "- y"
     ],
     "error": "Line 2 is a list item within a map."
@@ -311,16 +311,16 @@
     "name": "map item within list",
     "lamos": [
       "- x",
-      "b: y"
+      "b=y"
     ],
     "error": "Line 2 is a map item within a list."
   },
   {
     "name": "list item containing map within map",
     "lamos": [
-      "a: x",
-      "- b: y",
-      "  c: z"
+      "a=x",
+      "- b=y",
+      "  c=z"
     ],
     "error": "Line 2 is a list item within a map."
   },
@@ -328,7 +328,7 @@
     "name": "list item containing list within map",
     "lamos": [
       "- x",
-      "b:",
+      "b=",
       "  - z"
     ],
     "error": "Line 2 is a map item within a list."
@@ -337,7 +337,7 @@
     "name": "map as second item within list",
     "lamos": [
       "- w",
-      "- a:",
+      "- a=",
       "    - y",
       "- z"
     ],
@@ -384,30 +384,30 @@
     ]
   },
   {
-    "name": "escaped colon",
+    "name": "escaped equals sign",
     "lamos": [
-      "- a\\: b"
+      "- a\\=b"
     ],
     "tokens": [
       {
         "start": "list"
       },
       {
-        "string": "a: b"
+        "string": "a=b"
       },
       {
         "end": "list"
       }
     ],
     "js": [
-      "a: b"
+      "a=b"
     ]
   },
   {
-    "name": "escaped colon-space at end of line",
+    "name": "escaped equals sign at end of line",
     "lamos": [
-      "a:",
-      "  - b\\: ",
+      "a=",
+      "  - b\\= ",
       "  - c"
     ],
     "tokens": [
@@ -421,7 +421,7 @@
         "start": "list"
       },
       {
-        "string": "b: "
+        "string": "b= "
       },
       {
         "string": "c"
@@ -435,16 +435,16 @@
     ],
     "js": {
       "a": [
-        "b: ",
+        "b= ",
         "c"
       ]
     }
   },
   {
-    "name": "escaped colon at end of line",
+    "name": "escaped equals sign at end of line",
     "lamos": [
-      "a:",
-      "  - b\\:",
+      "a=",
+      "  - b\\=",
       "  - c"
     ],
     "tokens": [
@@ -458,7 +458,7 @@
         "start": "list"
       },
       {
-        "string": "b:"
+        "string": "b="
       },
       {
         "string": "c"
@@ -472,29 +472,29 @@
     ],
     "js": {
       "a": [
-        "b:",
+        "b=",
         "c"
       ]
     }
   },
   {
-    "name": "colon at start",
+    "name": "equals sign at start",
     "lamos": [
-      "- : b"
+      "- = b"
     ],
     "tokens": [
       {
         "start": "list"
       },
       {
-        "string": ": b"
+        "string": "= b"
       },
       {
         "end": "list"
       }
     ],
     "js": [
-      ": b"
+      "= b"
     ]
   },
   {
@@ -509,8 +509,8 @@
   {
     "name": "longer key",
     "lamos": [
-      "- abacus: x",
-      "  b: y"
+      "- abacus=x",
+      "  b=y"
     ],
     "js": [
       {
@@ -522,24 +522,26 @@
   {
     "name": "escaped map pair",
     "lamos": [
-      "a: x",
-      "b\\: y"
+      "a=x",
+      "b\\=y"
     ],
     "error": "Invalid map pair on line 2."
   },
   {
-    "name": "item ends with colon-space",
+    "name": "item ends with equals-space",
     "lamos": [
-      "- a: "
+      "- a= "
     ],
     "js": [
-      "a: "
+      {
+        "a": " "
+      }
     ]
   },
   {
-    "name": "item ends with colon",
+    "name": "item ends with equals",
     "lamos": [
-      "- a:"
+      "- a="
     ],
     "error": "Invalid map pair on line 1."
   },

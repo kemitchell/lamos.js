@@ -71,19 +71,19 @@ function recurse (data, indent, sortKeys, withinList) {
         var firstElement = index === 0
         if (typeof value === 'string') {
           if (withinList && firstElement) {
-            return key + ': ' + value
+            return key + '=' + value
           } else {
-            return prefix + key + ': ' + value
+            return prefix + key + '=' + value
           }
         } else {
           if (withinList && firstElement) {
             return (
-              key + ':\n' +
+              key + '=\n' +
               recurse(value, indent + 1, sortKeys, false)
             )
           } else {
             return (
-              prefix + key + ':\n' +
+              prefix + key + '=\n' +
               recurse(value, indent + 1, sortKeys, false)
             )
           }
@@ -96,9 +96,9 @@ function recurse (data, indent, sortKeys, withinList) {
 function escapeValue (string) {
   return string
     // Any unescaped ": " would denote a map pair.
-    .replace(/: /g, '\\: ')
+    .replace(/= /g, '\\= ')
     // Any unescaped ":" at end would denote a map key.
-    .replace(/:$/g, '\\:')
+    .replace(/=$/g, '\\=')
     // A leading, unescaped "- " would denote a nested list
     // and item.
     .replace(/^- /, '\\- ')
