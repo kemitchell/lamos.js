@@ -14,7 +14,7 @@
   "devDependencies": {
     "concat-stream": "^2.0.0",
     "defence-cli": "^3.0.1",
-    "depcheck": "^0.9.1",
+    "depcheck": "^1.4.3",
     "istanbul": "^0.4.5",
     "replace-require-self": "^1.1.1",
     "standard": "^14.3.1",
