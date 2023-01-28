@@ -6,27 +6,27 @@ serialization format:
 
 # The parser ignores blank lines.
 format:
-  - plain-text
-  - line-delimited
+- plain-text
+- line-delimited
 
 indentation:
-  - spaces
-  - two at a time
+- spaces
+- two at a time
 
 structures:
-  - list item
-  - key:
-      another key: another value
-      yet another key: yet another value
-    still another key:
-      - containing a list!
-      - of two items!
+- list item
+- key:
+    another key: another value
+    yet another key: yet another value
+  still another key:
+  - containing a list!
+  - of two items!
 
 nesting:
-  - - - a:
-          - x
-    - b: y
-  - z
+- - - a:
+      - x
+  - b: y
+- z
 ```
 
 There is just one datatype: raw, non-empty string. Strings appear in
@@ -108,8 +108,8 @@ pump(
   stringToStream([
     'a: x',
     'b:',
-    '  - y',
-    '  - z'
+    '- y',
+    '- z'
   ].join('\n')),
   lamos.tokenizer(),
   concatStream(function (tokens) {

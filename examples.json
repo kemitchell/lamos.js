@@ -66,8 +66,8 @@
     "name": "map containing list of maps",
     "lamos": [
       "a:",
-      "  - b: y",
-      "    c: z"
+      "- b: y",
+      "  c: z"
     ],
     "js": {
       "a": [
@@ -118,8 +118,8 @@
     "lamos": [
       "a: x",
       "b:",
-      "  - y",
-      "  - z"
+      "- y",
+      "- z"
     ],
     "js": {
       "a": "x",
@@ -177,28 +177,28 @@
     "name": "Beatles and Stones",
     "lamos": [
       "Beatles:",
-      "  - name: John",
-      "    plays: bass",
-      "  - name: Paul",
-      "    plays: guitar",
-      "  - name: George",
-      "    plays: guitar",
-      "  - name: Ringo",
-      "    plays: guitar",
+      "- name: John",
+      "  plays: bass",
+      "- name: Paul",
+      "  plays: guitar",
+      "- name: George",
+      "  plays: guitar",
+      "- name: Ringo",
+      "  plays: guitar",
       "",
       "Rolling Stones:",
-      "  - name: Brian",
-      "    plays: guitar",
-      "  - name: Mick",
-      "    plays: vocals",
-      "  - name: Keith",
-      "    plays: guitar",
-      "  - name: Bill",
-      "    plays: bass",
-      "  - name: Charlie",
-      "    plays: drums",
-      "  - name: Ian",
-      "    plays: piano"
+      "- name: Brian",
+      "  plays: guitar",
+      "- name: Mick",
+      "  plays: vocals",
+      "- name: Keith",
+      "  plays: guitar",
+      "- name: Bill",
+      "  plays: bass",
+      "- name: Charlie",
+      "  plays: drums",
+      "- name: Ian",
+      "  plays: piano"
     ],
     "js": {
       "Beatles": [
@@ -279,15 +279,7 @@
     "name": "invalid indentation",
     "lamos": [
       "a:",
-      " - x"
-    ],
-    "error": "Line 2 is not indented with an even number of spaces."
-  },
-  {
-    "name": "indented too far",
-    "lamos": [
-      "a:",
-      "    - x"
+      "  - x"
     ],
     "error": "Line 2 is indented too far."
   },
@@ -329,7 +321,7 @@
     "lamos": [
       "- x",
       "b:",
-      "  - z"
+      "- z"
     ],
     "error": "Line 2 is a map item within a list."
   },
@@ -338,7 +330,7 @@
     "lamos": [
       "- w",
       "- a:",
-      "    - y",
+      "  - y",
       "- z"
     ],
     "tokens": [
@@ -407,8 +399,8 @@
     "name": "escaped colon-space at end of line",
     "lamos": [
       "a:",
-      "  - b\\: ",
-      "  - c"
+      "- b\\: ",
+      "- c"
     ],
     "tokens": [
       {
@@ -444,8 +436,8 @@
     "name": "escaped colon at end of line",
     "lamos": [
       "a:",
-      "  - b\\:",
-      "  - c"
+      "- b\\:",
+      "- c"
     ],
     "tokens": [
       {
