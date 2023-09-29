@@ -6,21 +6,8 @@ exports.sorted = function (data) {
   return recurse(data, 0, true)
 }
 
-const repeat = String.prototype.repeat
-  ? function (string, times) {
-    return string.repeat(times)
-  }
-  /* istanbul ignore next */
-  : function repeat (string, times) {
-    let returned = ''
-    for (let i = 0; i < times; i++) {
-      returned += string
-    }
-    return returned
-  }
-
 function recurse (data, indent, sortKeys, withinList) {
-  const prefix = repeat('  ', indent)
+  const prefix = '  '.repeat(indent)
   if (Array.isArray(data)) {
     if (data.length === 0) {
       throw new Error('Cannot serialize empty array.')
