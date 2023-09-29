@@ -28,28 +28,6 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     )
   }
   const indent = leadingSpaces / 2
-  /*
-  if (indent > state.lastIndent) {
-    if (indent - state.lastIndent > 1) {
-      throw new Error(
-        'Line ' + number + ' is indented too far.'
-      )
-    } else {
-      // Unshift a null onto the stack for indented
-      // structure. The parser will find out what kind of
-      // structure it is later.
-      state.stack.unshift(null)
-    }
-  } else {
-    // Shift structures off the stack for each level
-    // indented out.
-    while (indent < state.lastIndent) {
-      state.lastIndent--
-      emitToken({ end: state.stack.shift() })
-    }
-  }
-  state.lastIndent = indent
-  */
 
   let parsedValue
   // List Item
