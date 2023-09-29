@@ -93,13 +93,14 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({ start: 'map' })
     }
     emitToken({ key: content.substr(0, content.length - 1) })
+    state.unshift({ type: TBD, indent })
   // Map Key-String Pair
   } else {
-    const parsedValue = parseValue(content)
-    if (!has(parsedValue, 'key')) {
+    const { key, string } = parseValue(content)
+    console.log('%s is %j', '{key, string}', {key, string})
+    if (!key) {
       throw new Error('Invalid map pair on line ' + number + '.')
     }
-    const key = parsedValue.key
     if (head.type === 'list') {
       throw new Error(
         'Line ' + number + ' is a map item within a list.'
@@ -110,7 +111,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({ start: 'map' })
     }
     emitToken({ key })
-    emitToken({ string: parsedValue.string })
+    emitToken({ string })
   }
 }
 
