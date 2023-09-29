@@ -6,9 +6,21 @@ const tape = require('tape')
 
 const examples = require('./examples').map(function (example) {
   if (example.lamos) {
-    example.lamos = example.lamos.join('\n')
+    example.lamos = example.lamos.join('\n') + '\n'
   }
   return example
+})
+
+tape.only('manual', test => {
+  const example = examples[0]
+  pump(
+    stringToStream(example.lamos),
+    lamos.tokenizer(),
+    concat(tokens => {
+      test.deepEqual(tokens, example.tokens)
+      test.end()
+    })
+  )
 })
 
 tape('parse', function (suite) {

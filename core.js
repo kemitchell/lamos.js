@@ -3,7 +3,7 @@ const TBD = null
 exports.tokenizerState = () => {
   return {
     stack: [{ type: TBD, indent: -1 }],
-    lastIndent: -1
+    lastIndent: 0
   }
 }
 
@@ -18,7 +18,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
 
   const match = SPACE_THEN_CONTENT.exec(line)
-  const leadingSpaces = match[1]
+  const leadingSpaces = match[1].length
   const content = match[2]
 
   // Ignore comment lines.
@@ -33,6 +33,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
   const indent = leadingSpaces / 2
   const { stack, lastIndent } = state
+  console.log('indent: %d last:%d', indent, lastIndent)
   if (indent > lastIndent) {
     for (let counter = indent; counter !== lastIndent; counter--) {
       emitToken('indent')
@@ -47,17 +48,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   // List Item
   const head = stack[0]
   if (content.startsWith('- ')) {
-    // e.g.
-    // x: y
-    // - z
-    if (head.type === 'map') {
-      throw new Error(
-        'Line ' + number + ' is a list item within a map.'
-      )
-    // e.g.
-    // - x
-    // - :w
-    } else if (head.type === TBD) {
+    if (head.type === TBD) {
       head.type = 'list'
       head.indent = indent
       emitToken({ start: 'list' })
