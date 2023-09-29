@@ -1,4 +1,4 @@
-var has = require('has')
+const has = require('has')
 
 exports.tokenizerState = function () {
   return {
@@ -7,9 +7,9 @@ exports.tokenizerState = function () {
   }
 }
 
-var LINE = /^(\s*)(.+)$/
+const LINE = /^(\s*)(.+)$/
 
-var startsWith = String.prototype.startsWith
+const startsWith = String.prototype.startsWith
   ? function (string, substring) {
     return string.startsWith(substring)
   }
@@ -18,7 +18,7 @@ var startsWith = String.prototype.startsWith
     return string.indexOf(substring) === 0
   }
 
-var endsWith = String.prototype.endsWith
+const endsWith = String.prototype.endsWith
   ? function (string, substring) {
     return string.endsWith(substring)
   }
@@ -27,7 +27,7 @@ var endsWith = String.prototype.endsWith
     return string.lastIndexOf(substring) === string.length - substring.length
   }
 
-var ESCAPE = '\\'
+const ESCAPE = '\\'
 
 exports.tokenizeLine = function (state, line, number, emitToken) {
   // Ignore empty lines.
@@ -35,22 +35,22 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     return
   }
 
-  var match = LINE.exec(line)
-  var content = match[2]
+  const match = LINE.exec(line)
+  const content = match[2]
   // Ignore comment lines.
   if (startsWith(content, '#')) {
     return
   }
 
   // Check indentation.
-  var leadingSpaces = match[1].length
+  const leadingSpaces = match[1].length
   if (leadingSpaces % 2 === 1) {
     throw new Error(
       'Line ' + number + ' is not indented ' +
       'with an even number of spaces.'
     )
   }
-  var indent = leadingSpaces / 2
+  const indent = leadingSpaces / 2
   if (indent > state.lastIndent) {
     if (indent - state.lastIndent > 1) {
       throw new Error(
@@ -72,7 +72,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
   state.lastIndent = indent
 
-  var parsedValue
+  let parsedValue
   // List Item
   if (startsWith(content, '- ')) {
     if (state.stack[0] === 'map') {
@@ -83,7 +83,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       state.stack[0] = 'list'
       emitToken({ start: 'list' })
     }
-    var offset = 2
+    let offset = 2
     // e.g.: "- - - - x"
     while (startsWith(content.substring(offset), '- ')) {
       state.lastIndent++
@@ -135,7 +135,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     if (!has(parsedValue, 'key')) {
       throw new Error('Invalid map pair on line ' + number + '.')
     }
-    var key = parsedValue.key
+    const key = parsedValue.key
     if (state.stack[0] === 'list') {
       throw new Error(
         'Line ' + number + ' is a map item within a list.'
@@ -144,21 +144,21 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       state.stack[0] = 'map'
       emitToken({ start: 'map' })
     }
-    emitToken({ key: key })
+    emitToken({ key })
     emitToken({ string: parsedValue.string })
   }
 }
 
 function parseValue (string) {
-  var index = string.indexOf(': ')
+  let index = string.indexOf(': ')
   if (index === -1) {
     if (endsWith(string, ESCAPE + ':')) {
       return { string: string.slice(0, string.length - 2) + ':' }
     } else {
-      return { string: string }
+      return { string }
     }
   }
-  var offset = 0
+  let offset = 0
   while (
     index !== -1 &&
     (
@@ -181,7 +181,7 @@ function parseValue (string) {
     index = string.indexOf(': ', offset)
   }
   if (index === -1) {
-    return { string: string }
+    return { string }
   } else {
     if (index + 2 === string.length) {
       // e.g. "- blah: "
@@ -189,7 +189,7 @@ function parseValue (string) {
       if (endsWith(string, ESCAPE + ': ')) {
         return { string: string.slice(0, string.length - 2) + ': ' }
       } else {
-        return { string: string }
+        return { string }
       }
     } else {
       return {
@@ -217,7 +217,7 @@ exports.parseToken = function (state, token) {
   /* istanbul ignore else */
   if (token.start) {
     // Add the new structure to stack[0].
-    var structure = token.start === 'map' ? {} : []
+    const structure = token.start === 'map' ? {} : []
     if (Array.isArray(state.stack[0])) {
       state.stack[0].push(structure)
     } else {
