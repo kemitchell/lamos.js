@@ -4,7 +4,7 @@ exports.tokenizerState = () => {
   return [{ type: null, indent: -1 }]
 }
 
-const INDENT_THEN_CONTENT = /^(\s*)(.+)$/
+const SPACE_THEN_CONTENT = /^(\s*)(.+)$/
 
 const ESCAPE = '\\'
 
@@ -14,13 +14,12 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     return
   }
 
-  const [indent, content] = INDENT_THEN_CONTENT.exec(line)
+  const [leadingSpaces, content] = SPACE_THEN_CONTENT.exec(line)
 
   // Ignore comment lines.
   if (content.startsWith('#')) return
 
   // Check indentation.
-  const leadingSpaces = match[1].length
   if (leadingSpaces % 2 === 1) {
     throw new Error(
       'Line ' + number + ' is not indented ' +
