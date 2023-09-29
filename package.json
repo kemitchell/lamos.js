@@ -4,7 +4,6 @@
   "version": "4.0.0",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "dependencies": {
-    "has": "^1.0.3",
     "pump": "^3.0.0",
     "pumpify": "^2.0.1",
     "split2": "^4.1.0",

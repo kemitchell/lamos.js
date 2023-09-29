@@ -1,5 +1,53 @@
 [
   {
+    "name": "token test",
+    "lamos": [
+      "- a:",
+      "  - b",
+      "- c: d"
+    ],
+    "tokens": [
+      {
+        "start": "list"
+      },
+      {
+        "start": "map"
+      },
+      {
+        "key": "a"
+      },
+      "indent",
+      {
+        "start": "list"
+      },
+      {
+        "string": "b"
+      },
+      {
+        "end": "list"
+      },
+      {
+        "end": "map"
+      },
+      "dedent",
+      {
+        "start": "map"
+      },
+      {
+        "key": "c"
+      },
+      {
+        "string": "d"
+      },
+      {
+        "end": "map"
+      },
+      {
+        "end": "list"
+      }
+    ]
+  },
+  {
     "name": "simple list",
     "lamos": [
       "- x",

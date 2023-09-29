@@ -29,6 +29,8 @@ tape('parse', function (suite) {
           }, new RegExp(example.error))
           test.end()
         }
+      } else {
+        test.end()
       }
     })
   })

@@ -1,9 +1,10 @@
-const has = require('has')
-
 const TBD = null
 
 exports.tokenizerState = () => {
-  return [{ type: TBD, indent: -1 }]
+  return {
+    stack: [{ type: TBD, indent: -1 }],
+    lastIndent: -1
+  }
 }
 
 const SPACE_THEN_CONTENT = /^(\s*)(.+)$/
@@ -31,9 +32,20 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     )
   }
   const indent = leadingSpaces / 2
+  const { stack, lastIndent } = state
+  if (indent > lastIndent) {
+    for (let counter = indent; counter !== lastIndent; counter--) {
+      emitToken('indent')
+    }
+  } else if (indent < lastIndent) {
+    for (let counter = indent; counter !== lastIndent; counter++) {
+      emitToken('dedent')
+    }
+  }
+  state.lastIndent = indent
 
   // List Item
-  const head = state[0]
+  const head = stack[0]
   if (content.startsWith('- ')) {
     // e.g.
     // x: y
@@ -54,21 +66,21 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     // e.g.: "- - - - x"
     let offset
     for (offset = 2; content.substring(offset).startsWith('- '); offset += 2) {
-      state.unshift({ type: 'list', indent: indent + (offset / 2) })
+      stack.unshift({ type: 'list', indent: indent + (offset / 2) })
       emitToken({ start: 'list' })
     }
     // e.g.
     // - - - - a:
     //           - x
     if (content.endsWith(':') && !content.endsWith(ESCAPE + ':')) {
-      state.unshift({ type: 'map', indent: indent + (offset / 2) + 1 })
+      stack.unshift({ type: 'map', indent: indent + (offset / 2) + 1 })
       emitToken({ start: 'map' })
       emitToken({ key: content.substring(offset, content.length - 1) })
     } else {
       const parsedValue = parseValue(content.substring(offset))
       // e.g. "- - - - a: x"
       if (parsedValue.key) {
-        state.unshift({ type: 'map', indent })
+        stack.unshift({ type: 'map', indent })
         emitToken({ start: 'map' })
         emitToken({ key: parsedValue.key })
         emitToken({ string: parsedValue.string })
@@ -93,11 +105,10 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
       emitToken({ start: 'map' })
     }
     emitToken({ key: content.substr(0, content.length - 1) })
-    state.unshift({ type: TBD, indent })
+    stack.unshift({ type: TBD, indent })
   // Map Key-String Pair
   } else {
     const { key, string } = parseValue(content)
-    console.log('%s is %j', '{key, string}', {key, string})
     if (!key) {
       throw new Error('Invalid map pair on line ' + number + '.')
     }
@@ -208,6 +219,10 @@ exports.parseToken = function (state, token) {
     } else {
       state.stack[0][state.lastKey] = token.string
     }
+  } else if (token === 'indent') {
+    // pass
+  } else if (token === 'dedent') {
+    // pass
   } else {
     throw new Error(
       'Invalid token: ' + JSON.stringify(token)
