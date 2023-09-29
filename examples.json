@@ -1,5 +1,16 @@
 [
   {
+    "name": "simple list",
+    "lamos": [
+      "- x",
+      "- y"
+    ],
+    "js": [
+      "x",
+      "y"
+    ]
+  },
+  {
     "name": "simple map",
     "lamos": [
       "a: x",
@@ -31,17 +42,6 @@
       },
       "f": "z"
     }
-  },
-  {
-    "name": "simple list",
-    "lamos": [
-      "- x",
-      "- y"
-    ],
-    "js": [
-      "x",
-      "y"
-    ]
   },
   {
     "name": "tricky list",
