@@ -1,16 +1,16 @@
-var core = require('./core')
-var pumpify = require('pumpify')
-var split2 = require('split2')
-var through2 = require('through2')
+const core = require('./core')
+const pumpify = require('pumpify')
+const split2 = require('split2')
+const through2 = require('through2')
 
 module.exports = function () {
-  var state = core.tokenizerState()
-  var lineNumber = 0
+  const state = core.tokenizerState()
+  let lineNumber = 0
   return pumpify.obj(
     split2(),
     through2.obj(
       function (line, _, done) {
-        var push = this.push.bind(this)
+        const push = this.push.bind(this)
         line = line.toString()
         lineNumber++
         try {

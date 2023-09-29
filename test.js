@@ -1,10 +1,10 @@
-var concat = require('concat-stream')
-var lamos = require('./')
-var pump = require('pump')
-var stringToStream = require('string-to-stream')
-var tape = require('tape')
+const concat = require('concat-stream')
+const lamos = require('./')
+const pump = require('pump')
+const stringToStream = require('string-to-stream')
+const tape = require('tape')
 
-var examples = require('./examples').map(function (example) {
+const examples = require('./examples').map(function (example) {
   if (example.lamos) {
     example.lamos = example.lamos.join('\n')
   }

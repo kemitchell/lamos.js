@@ -1,8 +1,8 @@
-var core = require('./core')
+const core = require('./core')
 
 module.exports = function (input) {
-  var tokenizerState = core.tokenizerState()
-  var tokens = []
+  const tokenizerState = core.tokenizerState()
+  const tokens = []
   input
     .split(/\n\r?/)
     .forEach(function (line, index) {
@@ -10,7 +10,7 @@ module.exports = function (input) {
     })
   core.flushTokenizer(tokenizerState, emitToken)
 
-  var parserState = core.parserState()
+  const parserState = core.parserState()
   tokens.forEach(function (token) {
     core.parseToken(parserState, token)
   })
