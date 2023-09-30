@@ -1,19 +1,20 @@
-const core = require('./core')
+const parser = require('./parser')
+const tokenizer = require('./tokenizer')
 
 module.exports = function (input) {
-  const tokenizerState = core.tokenizerState()
+  const tokenizerState = tokenizer.state()
   const tokens = []
   input
     .split(/\n\r?/)
     .forEach(function (line, index) {
-      core.tokenizeLine(tokenizerState, line, index + 1, emitToken)
+      tokenizer.tokenizeLine(tokenizerState, line, index + 1, emitToken)
     })
 
-  const parserState = core.parserState()
+  const parserState = parser.state()
   tokens.forEach(function (token) {
-    core.parseToken(parserState, token)
+    parser.parseToken(parserState, token)
   })
-  return core.parserResult(parserState)
+  return parser.result(parserState)
 
   function emitToken (token) {
     tokens.push(token)

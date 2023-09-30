@@ -15,7 +15,7 @@ tape.only('manual', test => {
   const example = examples[0]
   pump(
     stringToStream(example.lamos),
-    lamos.tokenizer(),
+    lamos.tokenize(),
     concat(tokens => {
       test.deepEqual(tokens, example.tokens)
       test.end()
