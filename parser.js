@@ -1,29 +1,22 @@
 module.exports = function (tokens) {
-  let returned
-  const valueStack = []
+  console.log('%s is %j', 'tokens', tokens)
 
   let currentToken
+  let currentKind
   let index = -1
   function advance () {
-    currentToken = tokens[++index]
+    index++
+    currentToken = tokens[index]
+    currentKind = currentToken ? currentToken.kind : null
   }
   advance()
 
-  if (currentToken.kind === 'item') {
-    returned = []
-    valueStack.unshift(returned)
-    list()
-  } else if (currentToken.kind === 'key') {
-    returned = {}
-    valueStack.unshift(returned)
-    map()
-  } else {
-    throw new Error('expected root list or map')
-  }
-  return returned
+  if (tokens[1].kind === 'item') return list()
+  else if (tokens[1].kind === 'key') return map()
+  else throw new Error('expected root list or map')
 
   function accept (kind) {
-    if (currentToken.kind === kind) {
+    if (currentKind === kind) {
       advance()
       return true
     }
@@ -33,34 +26,36 @@ module.exports = function (tokens) {
   function expect (kind) {
     if (accept(kind)) return true
     if (currentToken) {
-      throw new Error(`expected ${kind} found ${currentToken.kind}`)
+      throw new Error(`expected ${kind} found ${currentKind}`)
     } else {
       throw new Error(`expected ${kind} found end`)
     }
   }
 
   function list () {
-    while (currentToken && currentToken.kind === 'item') {
+    const returned = []
+    while (currentKind === 'item') {
       advance()
-      if (currentToken.kind === 'string') {
-        valueStack[0].push(currentToken.value)
+      if (currentKind === 'string') {
+        returned.push(currentToken.value)
         advance()
-      } else if (currentToken.kind === 'item') {
-        valueStack[0].push([])
-        list()
-        expect('dedent')
+      } else if (currentKind === 'indent') {
+        returned.push(list())
       }
     }
+    return returned
   }
 
   function map () {
-    while (currentToken && currentToken.kind === 'key') {
+    const returned = {}
+    while (currentToken && currentKind === 'key') {
       const key = currentToken.value
       advance()
-      if (currentToken.kind === 'string') {
-        valueStack[0][key] = currentToken.value
+      if (currentKind === 'string') {
+        returned[key] = currentToken.value
       }
       advance()
     }
+    return returned
   }
 }
