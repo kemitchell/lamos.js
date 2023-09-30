@@ -19,10 +19,6 @@ module.exports = function () {
         } catch (error) {
           done(error)
         }
-      },
-      function (done) {
-        core.flushTokenizer(state, this.push.bind(this))
-        done()
       }
     )
   )

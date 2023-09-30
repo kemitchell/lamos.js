@@ -7,20 +7,15 @@
       "- c: d"
     ],
     "tokens": [
-      { "start": "list" },
-      { "start": "map" },
-      { "key": "a" },
-      "indent",
-      { "start": "list" },
-      { "string": "b" },
-      "dedent",
-      { "end": "list" },
-      { "end": "map" },
-      { "start": "map" },
-      { "key": "c" },
-      { "string": "d" },
-      { "end": "map" },
-      { "end": "list" }
+      { "kind": "item" },
+      { "kind": "key", "value": "a" },
+      { "kind": "indent" },
+      { "kind": "item" },
+      { "kind": "string", "value": "b" },
+      { "kind": "dedent" },
+      { "kind": "item" },
+      { "kind": "key", "value": "c" },
+      { "kind": "string", "value": "d" }
     ]
   },
   {

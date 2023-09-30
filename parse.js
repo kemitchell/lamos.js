@@ -8,7 +8,6 @@ module.exports = function (input) {
     .forEach(function (line, index) {
       core.tokenizeLine(tokenizerState, line, index + 1, emitToken)
     })
-  core.flushTokenizer(tokenizerState, emitToken)
 
   const parserState = core.parserState()
   tokens.forEach(function (token) {

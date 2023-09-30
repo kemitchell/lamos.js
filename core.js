@@ -1,10 +1,5 @@
-const TBD = null
-
 exports.tokenizerState = () => {
-  return {
-    stack: [{ type: TBD, indent: -1 }],
-    lastIndent: 0
-  }
+  return { lastIndent: 0 }
 }
 
 const SPACE_THEN_CONTENT = /^(\s*)(.+)$/
@@ -24,7 +19,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   // Ignore comment lines.
   if (content.startsWith('#')) return
 
-  // Check indentation.
+  // Indentation
   if (leadingSpaces % 2 === 1) {
     throw new Error(
       'Line ' + number + ' is not indented ' +
@@ -32,88 +27,35 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
     )
   }
   const indent = leadingSpaces / 2
-  const { stack, lastIndent } = state
-  console.log('indent: %d last:%d', indent, lastIndent)
+  const { lastIndent } = state
   if (indent > lastIndent) {
     for (let counter = indent; counter !== lastIndent; counter--) {
-      emitToken('indent')
+      emitToken({ kind: 'indent' })
     }
   } else if (indent < lastIndent) {
     for (let counter = indent; counter !== lastIndent; counter++) {
-      emitToken('dedent')
+      emitToken({ kind: 'dedent' })
     }
   }
   state.lastIndent = indent
 
-  // List Item
-  const head = stack[0]
-  if (content.startsWith('- ')) {
-    if (head.type === TBD) {
-      head.type = 'list'
-      head.indent = indent
-      emitToken({ start: 'list' })
-    }
-    // List item in a list.
-    // e.g.: "- - - - x"
-    let offset
-    for (offset = 2; content.substring(offset).startsWith('- '); offset += 2) {
-      stack.unshift({ type: 'list', indent: indent + (offset / 2) })
-      emitToken({ start: 'list' })
-    }
-    // e.g.
-    // - - - - a:
-    //           - x
-    if (content.endsWith(':') && !content.endsWith(ESCAPE + ':')) {
-      stack.unshift({ type: 'map', indent: indent + (offset / 2) + 1 })
-      emitToken({ start: 'map' })
-      emitToken({ key: content.substring(offset, content.length - 1) })
-    } else {
-      const parsedValue = parseValue(content.substring(offset))
-      // e.g. "- - - - a: x"
-      if (parsedValue.key) {
-        stack.unshift({ type: 'map', indent })
-        emitToken({ start: 'map' })
-        emitToken({ key: parsedValue.key })
-        emitToken({ string: parsedValue.string })
-      } else {
-        emitToken({
-          // Remove any escape code to avoid list item syntax.
-          string: parsedValue.string.startsWith(ESCAPE + '- ')
-            ? parsedValue.string.substring(1)
-            : parsedValue.string
-        })
-      }
-    }
-  // Map Containing List Item
-  } else if (content.endsWith(':') && !content.endsWith(ESCAPE + ':')) {
-    if (head.type === 'list') {
-      throw new Error(
-        'Line ' + number + ' is a map item within a list.'
-      )
-    } else if (head.type === null) {
-      head.type = 'map'
-      head.indent = indent
-      emitToken({ start: 'map' })
-    }
-    emitToken({ key: content.substr(0, content.length - 1) })
-    stack.unshift({ type: TBD, indent })
-  // Map Key-String Pair
+  // Content
+  let offset
+  for (offset = 0; content.substring(offset).startsWith('- '); offset += 2) {
+    emitToken({ kind: 'item' })
+  }
+  if (content.endsWith(':') && !content.endsWith(ESCAPE + ':')) {
+    emitToken({ kind: 'key', value: content.substring(offset, content.length - 1) })
   } else {
-    const { key, string } = parseValue(content)
-    if (!key) {
-      throw new Error('Invalid map pair on line ' + number + '.')
-    }
-    if (head.type === 'list') {
-      throw new Error(
-        'Line ' + number + ' is a map item within a list.'
-      )
-    } else if (head.type === null) {
-      head.type = 'map'
-      head.indent = indent
-      emitToken({ start: 'map' })
-    }
-    emitToken({ key })
-    emitToken({ string })
+    const { key, string } = parseValue(content.substring(offset))
+    if (key) emitToken({ kind: 'key', value: key })
+    emitToken({
+      kind: 'string',
+      // Remove any escape code to avoid list item syntax.
+      value: string.startsWith(ESCAPE + '- ')
+        ? string.substring(1)
+        : string
+    })
   }
 }
 
@@ -165,12 +107,6 @@ function parseValue (string) {
         string: string.substring(index + 2)
       }
     }
-  }
-}
-
-exports.flushTokenizer = function (state, emitToken) {
-  while (state.length > 0) {
-    emitToken({ end: state.shift().type })
   }
 }
 
