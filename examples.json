@@ -24,10 +24,7 @@
       "- x",
       "- y"
     ],
-    "js": [
-      "x",
-      "y"
-    ]
+    "js": ["x", "y"]
   },
   {
     "name": "simple map",
@@ -35,10 +32,7 @@
       "a: x",
       "b: y"
     ],
-    "js": {
-      "a": "x",
-      "b": "y"
-    }
+    "js": { "a": "x", "b": "y" }
   },
   {
     "name": "tricky map",
@@ -71,13 +65,7 @@
       "- z"
     ],
     "js": [
-      [
-        [
-          "w",
-          "x"
-        ],
-        "y"
-      ],
+      [["w", "x"], "y"],
       "z"
     ]
   },
@@ -88,48 +76,19 @@
       "- b: y",
       "  c: z"
     ],
-    "js": {
-      "a": [
-        {
-          "b": "y",
-          "c": "z"
-        }
-      ]
-    },
+    "js": { "a": [{ "b": "y", "c": "z" }] },
     "tokens": [
-      {
-        "start": "map"
-      },
-      {
-        "key": "a"
-      },
-      {
-        "start": "list"
-      },
-      {
-        "start": "map"
-      },
-      {
-        "key": "b"
-      },
-      {
-        "string": "y"
-      },
-      {
-        "key": "c"
-      },
-      {
-        "string": "z"
-      },
-      {
-        "end": "map"
-      },
-      {
-        "end": "list"
-      },
-      {
-        "end": "map"
-      }
+      { "start": "map" },
+      { "key": "a" },
+      { "start": "list" },
+      { "start": "map" },
+      { "key": "b" },
+      { "string": "y" },
+      { "key": "c" },
+      { "string": "z" },
+      { "end": "map" },
+      { "end": "list" },
+      { "end": "map" }
     ]
   },
   {
@@ -140,41 +99,17 @@
       "- y",
       "- z"
     ],
-    "js": {
-      "a": "x",
-      "b": [
-        "y",
-        "z"
-      ]
-    },
+    "js": { "a": "x", "b": ["y", "z"] },
     "tokens": [
-      {
-        "start": "map"
-      },
-      {
-        "key": "a"
-      },
-      {
-        "string": "x"
-      },
-      {
-        "key": "b"
-      },
-      {
-        "start": "list"
-      },
-      {
-        "string": "y"
-      },
-      {
-        "string": "z"
-      },
-      {
-        "end": "list"
-      },
-      {
-        "end": "map"
-      }
+      { "start": "map" },
+      { "key": "a" },
+      { "string": "x" },
+      { "key": "b" },
+      { "start": "list" },
+      { "string": "y" },
+      { "string": "z" },
+      { "end": "list" },
+      { "end": "map" }
     ]
   },
   {
@@ -184,14 +119,7 @@
       "- - y",
       "  - z"
     ],
-    "js": [
-      "x",
-      [
-        "y",
-        "z"
-      ]
-    ]
-  },
+    "js": ["x", ["y", "z"]] },
   {
     "name": "Beatles and Stones",
     "lamos": [
@@ -221,48 +149,18 @@
     ],
     "js": {
       "Beatles": [
-        {
-          "name": "John",
-          "plays": "bass"
-        },
-        {
-          "name": "Paul",
-          "plays": "guitar"
-        },
-        {
-          "name": "George",
-          "plays": "guitar"
-        },
-        {
-          "name": "Ringo",
-          "plays": "guitar"
-        }
+        { "name": "John", "plays": "bass" },
+        { "name": "Paul", "plays": "guitar" },
+        { "name": "George", "plays": "guitar" },
+        { "name": "Ringo", "plays": "guitar" }
       ],
       "Rolling Stones": [
-        {
-          "name": "Brian",
-          "plays": "guitar"
-        },
-        {
-          "name": "Mick",
-          "plays": "vocals"
-        },
-        {
-          "name": "Keith",
-          "plays": "guitar"
-        },
-        {
-          "name": "Bill",
-          "plays": "bass"
-        },
-        {
-          "name": "Charlie",
-          "plays": "drums"
-        },
-        {
-          "name": "Ian",
-          "plays": "piano"
-        }
+        { "name": "Brian", "plays": "guitar" },
+        { "name": "Mick", "plays": "vocals" },
+        { "name": "Keith", "plays": "guitar" },
+        { "name": "Bill", "plays": "bass" },
+        { "name": "Charlie", "plays": "drums" },
+        { "name": "Ian", "plays": "piano" }
       ]
     }
   },
@@ -275,10 +173,7 @@
       "",
       ""
     ],
-    "js": {
-      "a": "x",
-      "b": "y"
-    }
+    "js": { "a": "x", "b": "y" }
   },
   {
     "name": "ignores comment lines",
@@ -289,10 +184,7 @@
       "# blah blah",
       "# blah blah"
     ],
-    "js": {
-      "a": "x",
-      "b": "y"
-    }
+    "js": { "a": "x", "b": "y" }
   },
   {
     "name": "invalid indentation",
@@ -353,66 +245,28 @@
       "- z"
     ],
     "tokens": [
-      {
-        "start": "list"
-      },
-      {
-        "string": "w"
-      },
-      {
-        "start": "map"
-      },
-      {
-        "key": "a"
-      },
-      {
-        "start": "list"
-      },
-      {
-        "string": "y"
-      },
-      {
-        "end": "list"
-      },
-      {
-        "end": "map"
-      },
-      {
-        "string": "z"
-      },
-      {
-        "end": "list"
-      }
+      { "start": "list" },
+      { "string": "w" },
+      { "start": "map" },
+      { "key": "a" },
+      { "start": "list" },
+      { "string": "y" },
+      { "end": "list" },
+      { "end": "map" },
+      { "string": "z" },
+      { "end": "list" }
     ],
-    "js": [
-      "w",
-      {
-        "a": [
-          "y"
-        ]
-      },
-      "z"
-    ]
+    "js": ["w", { "a": ["y"] }, "z"]
   },
   {
     "name": "escaped colon",
-    "lamos": [
-      "- a\\: b"
-    ],
+    "lamos": ["- a\\: b"],
     "tokens": [
-      {
-        "start": "list"
-      },
-      {
-        "string": "a: b"
-      },
-      {
-        "end": "list"
-      }
+      { "start": "list" },
+      { "string": "a: b" },
+      { "end": "list" }
     ],
-    "js": [
-      "a: b"
-    ]
+    "js": ["a: b"]
   },
   {
     "name": "escaped colon-space at end of line",
@@ -422,34 +276,15 @@
       "- c"
     ],
     "tokens": [
-      {
-        "start": "map"
-      },
-      {
-        "key": "a"
-      },
-      {
-        "start": "list"
-      },
-      {
-        "string": "b: "
-      },
-      {
-        "string": "c"
-      },
-      {
-        "end": "list"
-      },
-      {
-        "end": "map"
-      }
+      { "start": "map" },
+      { "key": "a" },
+      { "start": "list" },
+      { "string": "b: " },
+      { "string": "c" },
+      { "end": "list" },
+      { "end": "map" }
     ],
-    "js": {
-      "a": [
-        "b: ",
-        "c"
-      ]
-    }
+    "js": { "a": ["b: ", "c"] }
   },
   {
     "name": "escaped colon at end of line",
@@ -459,63 +294,30 @@
       "- c"
     ],
     "tokens": [
-      {
-        "start": "map"
-      },
-      {
-        "key": "a"
-      },
-      {
-        "start": "list"
-      },
-      {
-        "string": "b:"
-      },
-      {
-        "string": "c"
-      },
-      {
-        "end": "list"
-      },
-      {
-        "end": "map"
-      }
+      { "start": "map" },
+      { "key": "a" },
+      { "start": "list" },
+      { "string": "b:" },
+      { "string": "c" },
+      { "end": "list" },
+      { "end": "map" }
     ],
-    "js": {
-      "a": [
-        "b:",
-        "c"
-      ]
-    }
+    "js": { "a": ["b:", "c"] }
   },
   {
     "name": "colon at start",
-    "lamos": [
-      "- : b"
-    ],
+    "lamos": ["- : b"],
     "tokens": [
-      {
-        "start": "list"
-      },
-      {
-        "string": ": b"
-      },
-      {
-        "end": "list"
-      }
+      { "start": "list" },
+      { "string": ": b" },
+      { "end": "list" }
     ],
-    "js": [
-      ": b"
-    ]
+    "js": [": b"]
   },
   {
     "name": "escaped hyphen",
-    "lamos": [
-      "- \\- a"
-    ],
-    "js": [
-      "- a"
-    ]
+    "lamos": ["- \\- a"],
+    "js":  ["- a"]
   },
   {
     "name": "longer key",
@@ -523,12 +325,7 @@
       "- abacus: x",
       "  b: y"
     ],
-    "js": [
-      {
-        "abacus": "x",
-        "b": "y"
-      }
-    ]
+    "js": [{ "abacus": "x", "b": "y" }]
   },
   {
     "name": "escaped map pair",
@@ -540,36 +337,22 @@
   },
   {
     "name": "item ends with colon-space",
-    "lamos": [
-      "- a: "
-    ],
-    "js": [
-      "a: "
-    ]
+    "lamos": ["- a: "],
+    "js": ["a: "]
   },
   {
     "name": "item ends with colon",
-    "lamos": [
-      "- a:"
-    ],
+    "lamos": ["- a:"],
     "error": "Invalid map pair on line 1."
   },
   {
     "name": "escaped hyphen between hyphens",
-    "lamos": [
-      "- - \\- - a"
-    ],
-    "js": [
-      [
-        "- - a"
-      ]
-    ]
+    "lamos": ["- - \\- - a"],
+    "js": [["- - a"]]
   },
   {
     "name": "newline in string",
-    "js": [
-      "this\nthat"
-    ],
+    "js": ["this\nthat"],
     "error": "Cannot serialize string with newline"
   }
 ]
