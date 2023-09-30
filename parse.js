@@ -10,11 +10,7 @@ module.exports = function (input) {
       tokenizer.tokenizeLine(tokenizerState, line, index + 1, emitToken)
     })
 
-  const parserState = parser.state()
-  tokens.forEach(function (token) {
-    parser.parseToken(parserState, token)
-  })
-  return parser.result(parserState)
+  return parser(tokens)
 
   function emitToken (token) {
     tokens.push(token)

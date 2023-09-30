@@ -1,50 +1,53 @@
-exports.state = function () {
-  return {
-    stack: [],
-    value: undefined
-  }
-}
+module.exports = function (tokens) {
+  let returned
+  const valueStack = []
 
-exports.parseToken = function (state, token) {
-  /* istanbul ignore else */
-  if (token.start) {
-    // Add the new structure to stack[0].
-    const structure = token.start === 'map' ? {} : []
-    if (Array.isArray(state.stack[0])) {
-      state.stack[0].push(structure)
-    } else {
-      if (state.lastKey) {
-        state.stack[0][state.lastKey] = structure
-      }
-    }
-    // Unshift the new structure, so it becomes stack[0].
-    state.stack.unshift(structure)
-  } else if (token.end) {
-    // Retain values shifted off the stack. When the parser
-    // is done, the last structure shifted off is the
-    // fully-parsed result.
-    state.value = state.stack.shift()
-  } else if (token.key) {
-    state.lastKey = token.key
-  } else if (token.string) {
-    // In an array, push the string.
-    if (Array.isArray(state.stack[0])) {
-      state.stack[0].push(token.string)
-    // In a map, set property.
-    } else {
-      state.stack[0][state.lastKey] = token.string
-    }
-  } else if (token === 'indent') {
-    // pass
-  } else if (token === 'dedent') {
-    // pass
+  let currentToken
+  let index = -1
+  function advance () {
+    currentToken = tokens[++index]
+  }
+  advance()
+
+  if (currentToken.kind === 'item') {
+    returned = []
+    valueStack.unshift(returned)
+    list()
+  } else if (currentToken.kind === 'key') {
+    returned = {}
+    valueStack.unshift(returned)
+    map()
   } else {
-    throw new Error(
-      'Invalid token: ' + JSON.stringify(token)
-    )
+    throw new Error('expected root list or map')
   }
-}
+  return returned
 
-exports.result = function (state) {
-  return state.value
+  function accept (kind) {
+    if (currentToken.kind === kind) {
+      advance()
+      return true
+    }
+    return false
+  }
+
+  function list () {
+    while (currentToken && currentToken.kind === 'item') {
+      advance()
+      if (currentToken.kind === 'string') {
+        valueStack[0].push(currentToken.value)
+      }
+      advance()
+    }
+  }
+
+  function map () {
+    while (currentToken && currentToken.kind === 'key') {
+      const key = currentToken.value
+      advance()
+      if (currentToken.kind === 'string') {
+        valueStack[0][key] = currentToken.value
+      }
+      advance()
+    }
+  }
 }

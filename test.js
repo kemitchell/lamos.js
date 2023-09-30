@@ -11,16 +11,20 @@ const examples = require('./examples').map(function (example) {
   return example
 })
 
-tape.only('manual', test => {
-  const example = examples[0]
-  pump(
-    stringToStream(example.lamos),
-    lamos.tokenize(),
-    concat(tokens => {
-      test.deepEqual(tokens, example.tokens)
-      test.end()
+tape.only('manual', suite => {
+  for (const example of examples.slice(0, 2)) {
+    suite.test(example.name, test => {
+      test.deepEqual(lamos.parse(example.lamos), example.js, 'parsed')
+      pump(
+        stringToStream(example.lamos),
+        lamos.tokenize(),
+        concat(tokens => {
+          test.deepEqual(tokens, example.tokens, 'tokens')
+          test.end()
+        })
+      )
     })
-  )
+  }
 })
 
 tape('parse', function (suite) {

@@ -1,5 +1,33 @@
 [
   {
+    "name": "simple list",
+    "lamos": [
+      "- x",
+      "- y"
+    ],
+    "tokens": [
+      { "kind": "item" },
+      { "kind": "string", "value": "x" },
+      { "kind": "item" },
+      { "kind": "string", "value": "y" }
+    ],
+    "js": ["x", "y"]
+  },
+  {
+    "name": "simple map",
+    "lamos": [
+      "a: x",
+      "b: y"
+    ],
+    "tokens": [
+      { "kind": "key", "value": "a" },
+      { "kind": "string", "value": "x" },
+      { "kind": "key", "value": "b" },
+      { "kind": "string", "value": "y" }
+    ],
+    "js": { "a": "x", "b": "y" }
+  },
+  {
     "name": "token test",
     "lamos": [
       "- a:",
@@ -17,22 +45,6 @@
       { "kind": "key", "value": "c" },
       { "kind": "string", "value": "d" }
     ]
-  },
-  {
-    "name": "simple list",
-    "lamos": [
-      "- x",
-      "- y"
-    ],
-    "js": ["x", "y"]
-  },
-  {
-    "name": "simple map",
-    "lamos": [
-      "a: x",
-      "b: y"
-    ],
-    "js": { "a": "x", "b": "y" }
   },
   {
     "name": "tricky map",
