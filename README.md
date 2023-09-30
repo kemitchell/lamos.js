@@ -44,8 +44,8 @@ This JavaScript implementation exposes an API of the built-in `JSON`
 object:
 
 ```javascript
-var lamos = require('lamos')
-var assert = require('assert')
+const lamos = require('lamos')
+const assert = require('assert')
 
 assert.deepStrictEqual(
   lamos.parse(
@@ -100,9 +100,9 @@ The API also exposes a constructor for Node.js transform streams that
 parse markup and emit tokens, ideal for processing long streams:
 
 ```javascript
-var concatStream = require('concat-stream')
-var pump = require('pump')
-var stringToStream = require('string-to-stream')
+const concatStream = require('concat-stream')
+const pump = require('pump')
+const stringToStream = require('string-to-stream')
 
 pump(
   stringToStream([
