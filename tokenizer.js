@@ -42,6 +42,7 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   // Content
   let offset
   for (offset = 0; content.substring(offset).startsWith('- '); offset += 2) {
+    if (offset > 0) emitToken({ kind: 'indent' })
     emitToken({ kind: 'item' })
   }
   if (content.endsWith(':') && !content.endsWith(ESCAPE + ':')) {

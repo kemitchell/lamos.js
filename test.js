@@ -11,15 +11,14 @@ const examples = require('./examples').map(function (example) {
   return example
 })
 
-tape.only('manual', suite => {
-  for (const example of examples.slice(0, 2)) {
+tape('tokenizer', suite => {
+  for (const example of examples.filter(e => e.tokens)) {
     suite.test(example.name, test => {
-      test.deepEqual(lamos.parse(example.lamos), example.js, 'parsed')
       pump(
         stringToStream(example.lamos),
         lamos.tokenize(),
-        concat(tokens => {
-          test.deepEqual(tokens, example.tokens, 'tokens')
+        concat(function (tokens) {
+          test.deepEqual(tokens, example.tokens)
           test.end()
         })
       )
@@ -49,39 +48,6 @@ tape('parse', function (suite) {
         test.end()
       }
     })
-  })
-})
-
-tape('tokenizer', function (suite) {
-  examples.forEach(function (example) {
-    if (example.tokens) {
-      suite.test(example.name, function (test) {
-        pump(
-          stringToStream(example.lamos),
-          lamos.tokenizer(),
-          concat(function (tokens) {
-            test.deepEqual(tokens, example.tokens)
-            test.end()
-          })
-        )
-      })
-    } else if (example.error) {
-      if (example.lamos) {
-        suite.test(example.name, function (test) {
-          pump(
-            stringToStream(example.lamos),
-            lamos.tokenizer(),
-            concat(function () {}),
-            function (error) {
-              test.equal(
-                error.message, example.error
-              )
-              test.end()
-            }
-          )
-        })
-      }
-    }
   })
 })
 

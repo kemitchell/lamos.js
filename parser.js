@@ -30,13 +30,26 @@ module.exports = function (tokens) {
     return false
   }
 
+  function expect (kind) {
+    if (accept(kind)) return true
+    if (currentToken) {
+      throw new Error(`expected ${kind} found ${currentToken.kind}`)
+    } else {
+      throw new Error(`expected ${kind} found end`)
+    }
+  }
+
   function list () {
     while (currentToken && currentToken.kind === 'item') {
       advance()
       if (currentToken.kind === 'string') {
         valueStack[0].push(currentToken.value)
+        advance()
+      } else if (currentToken.kind === 'item') {
+        valueStack[0].push([])
+        list()
+        expect('dedent')
       }
-      advance()
     }
   }
 

@@ -14,6 +14,19 @@
     "js": ["x", "y"]
   },
   {
+    "name": "nested list",
+    "lamos": [
+      "- - y"
+    ],
+    "tokens": [
+      { "kind": "item" },
+      { "kind": "indent" },
+      { "kind": "item" },
+      { "kind": "string", "value": "y" }
+    ],
+    "js": ["x", ["y"]]
+  },
+  {
     "name": "simple map",
     "lamos": [
       "a: x",
@@ -26,6 +39,24 @@
       { "kind": "string", "value": "y" }
     ],
     "js": { "a": "x", "b": "y" }
+  },
+  {
+    "name": "nested map",
+    "lamos": [
+      "a:",
+      "  b: x",
+      "c: y"
+    ],
+    "tokens": [
+      { "kind": "key", "value": "a" },
+      { "kind": "indent" },
+      { "kind": "key", "value": "b" },
+      { "kind": "string", "value": "x" },
+      { "kind": "dedent" },
+      { "kind": "key", "value": "c" },
+      { "kind": "string", "value": "y" }
+    ],
+    "js": { "a": { "b": "x" }, "c": "y" }
   },
   {
     "name": "token test",
@@ -90,17 +121,13 @@
     ],
     "js": { "a": [{ "b": "y", "c": "z" }] },
     "tokens": [
-      { "start": "map" },
-      { "key": "a" },
-      { "start": "list" },
-      { "start": "map" },
-      { "key": "b" },
-      { "string": "y" },
-      { "key": "c" },
-      { "string": "z" },
-      { "end": "map" },
-      { "end": "list" },
-      { "end": "map" }
+      { "kind": "key", "value": "a" },
+      { "kind": "item" },
+      { "kind": "key", "value": "b" },
+      { "kind": "string", "value": "y" },
+      { "kind": "indent" },
+      { "kind": "key", "value": "c" },
+      { "kind": "string", "value": "z" }
     ]
   },
   {
@@ -113,15 +140,13 @@
     ],
     "js": { "a": "x", "b": ["y", "z"] },
     "tokens": [
-      { "start": "map" },
-      { "key": "a" },
-      { "string": "x" },
-      { "key": "b" },
-      { "start": "list" },
-      { "string": "y" },
-      { "string": "z" },
-      { "end": "list" },
-      { "end": "map" }
+      { "kind": "key", "value": "a" },
+      { "kind": "string", "value": "x" },
+      { "kind": "key", "value": "b" },
+      { "kind": "item" },
+      { "kind": "string", "value": "y" },
+      { "kind": "item" },
+      { "kind": "string", "value": "z" }
     ]
   },
   {
@@ -257,16 +282,16 @@
       "- z"
     ],
     "tokens": [
-      { "start": "list" },
-      { "string": "w" },
-      { "start": "map" },
-      { "key": "a" },
-      { "start": "list" },
-      { "string": "y" },
-      { "end": "list" },
-      { "end": "map" },
-      { "string": "z" },
-      { "end": "list" }
+      { "kind": "item" },
+      { "kind": "string", "value": "w" },
+      { "kind": "item" },
+      { "kind": "key", "value": "a" },
+      { "kind": "indent" },
+      { "kind": "item" },
+      { "kind": "string", "value": "y" },
+      { "kind": "dedent" },
+      { "kind": "item" },
+      { "kind": "string", "value": "z" }
     ],
     "js": ["w", { "a": ["y"] }, "z"]
   },
@@ -274,9 +299,8 @@
     "name": "escaped colon",
     "lamos": ["- a\\: b"],
     "tokens": [
-      { "start": "list" },
-      { "string": "a: b" },
-      { "end": "list" }
+      { "kind": "item" },
+      { "kind": "string", "value": "a: b" }
     ],
     "js": ["a: b"]
   },
@@ -288,13 +312,11 @@
       "- c"
     ],
     "tokens": [
-      { "start": "map" },
-      { "key": "a" },
-      { "start": "list" },
-      { "string": "b: " },
-      { "string": "c" },
-      { "end": "list" },
-      { "end": "map" }
+      { "kind": "key", "value": "a" },
+      { "kind": "item" },
+      { "kind": "string", "value": "b: " },
+      { "kind": "item" },
+      { "kind": "string", "value": "c" }
     ],
     "js": { "a": ["b: ", "c"] }
   },
@@ -306,13 +328,11 @@
       "- c"
     ],
     "tokens": [
-      { "start": "map" },
-      { "key": "a" },
-      { "start": "list" },
-      { "string": "b:" },
-      { "string": "c" },
-      { "end": "list" },
-      { "end": "map" }
+      { "kind": "key", "value": "a" },
+      { "kind": "item" },
+      { "kind": "string", "value": "b:" },
+      { "kind": "item" },
+      { "kind": "string", "value": "c" }
     ],
     "js": { "a": ["b:", "c"] }
   },
@@ -320,9 +340,8 @@
     "name": "colon at start",
     "lamos": ["- : b"],
     "tokens": [
-      { "start": "list" },
-      { "string": ": b" },
-      { "end": "list" }
+      { "kind": "item" },
+      { "kind": "string", "value": ": b" }
     ],
     "js": [": b"]
   },
