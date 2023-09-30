@@ -60,6 +60,13 @@ exports.tokenizeLine = function (state, line, number, emitToken) {
   }
 }
 
+exports.flush = ({ lastIndent }, emitToken) => {
+  while (lastIndent > 0) {
+    emitToken({ kind: 'dedent' })
+    lastIndent--
+  }
+}
+
 function parseValue (string) {
   let index = string.indexOf(': ')
   if (index === -1) {

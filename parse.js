@@ -9,6 +9,7 @@ module.exports = function (input) {
     .forEach(function (line, index) {
       tokenizer.tokenizeLine(tokenizerState, line, index + 1, emitToken)
     })
+  tokenizer.flush(tokenizerState, emitToken)
 
   return parser(tokens)
 

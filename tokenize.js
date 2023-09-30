@@ -19,6 +19,10 @@ module.exports = function () {
         } catch (error) {
           done(error)
         }
+      },
+      function (done) {
+        tokenizer.flush(state, this.push.bind(this))
+        done()
       }
     )
   )

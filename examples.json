@@ -16,13 +16,18 @@
   {
     "name": "nested list",
     "lamos": [
-      "- - y"
+      "- - y",
+      "  - z"
     ],
     "tokens": [
       { "kind": "item" },
       { "kind": "indent" },
       { "kind": "item" },
-      { "kind": "string", "value": "y" }
+      { "kind": "string", "value": "y" },
+      { "kind": "indent" },
+      { "kind": "item" },
+      { "kind": "string", "value": "z" },
+      { "kind": "dedent" }
     ],
     "js": ["x", ["y"]]
   },
@@ -127,7 +132,8 @@
       { "kind": "string", "value": "y" },
       { "kind": "indent" },
       { "kind": "key", "value": "c" },
-      { "kind": "string", "value": "z" }
+      { "kind": "string", "value": "z" },
+      { "kind": "dedent" }
     ]
   },
   {
