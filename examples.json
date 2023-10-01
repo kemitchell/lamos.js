@@ -355,5 +355,13 @@
     "name": "newline in string",
     "js": ["this\nthat"],
     "error": "Cannot serialize string with newline"
+  },
+  {
+    "name": "odd number of indent spaces",
+    "lamos": [
+      "a:",
+      "   b: C"
+    ],
+    "error": "invalid indentation on line 2"
   }
 ]
