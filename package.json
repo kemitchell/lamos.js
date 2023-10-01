@@ -25,5 +25,6 @@
     "test": "npm run test:suite && npm run test:readme",
     "test:readme": "defence -i javascript README.md | sed \"s!from 'lamos'!from './index.js'!\" > README.js ; node README.js",
     "test:suite": "NODE_V8_COVERAGE=./coverage node --experimental-test-coverage test.js"
-  }
+  },
+  "version": "9.0.0"
 }
