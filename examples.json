@@ -1,0 +1,359 @@
+[
+  {
+    "name": "readme",
+    "lamos": [
+      "structures:",
+      "- list item",
+      "- key:",
+      "    another key: another value",
+      "    yet another key: yet another value",
+      "  still another key:",
+      "  - containing a list!",
+      "  - of two items!",
+      "",
+      "nested:",
+      "- - - a:",
+      "      - x",
+      "  - b: y",
+      "- z"
+    ],
+    "js": {
+      "structures": [
+        "list item",
+        {
+          "key": {
+            "another key": "another value",
+            "yet another key": "yet another value"
+          },
+          "still another key": [
+            "containing a list!",
+            "of two items!"
+          ]
+        }
+      ],
+      "nested": [
+        [
+          [ { "a": ["x"] } ],
+          { "b": "y" }
+        ],
+        "z"
+      ]
+    }
+  },
+  {
+    "name": "simple list",
+    "lamos": [
+      "- a",
+      "- b"
+    ],
+    "js": ["a", "b"],
+    "tokens": [
+      ["item", ["string", "a"]],
+      ["item", ["string", "b"]]
+    ]
+  },
+  {
+    "name": "nested lists",
+    "lamos": [
+      "- a",
+      "- - - b",
+      "  - c",
+      "- d"
+    ],
+    "js": ["a", [["b"], "c"], "d"],
+    "tokens": [
+      ["item", ["string", "a"]],
+      ["item", "in", "item", "in", "item", ["string", "b"]],
+      ["out", "item", ["string", "c"]],
+      ["out", "item", ["string", "d"]]
+    ]
+  },
+  {
+    "name": "simple map",
+    "lamos": [
+      "a: y",
+      "b: z"
+    ],
+    "js": { "a": "y", "b": "z" },
+    "tokens": [
+      [["key", "a"], ["string", "y"]],
+      [["key", "b"], ["string", "z"]]
+    ]
+  },
+  {
+    "name": "nested maps",
+    "lamos": [
+      "a:",
+      "  b:",
+      "    c: d",
+      "  e:",
+      "    f: g",
+      "h: i"
+    ],
+    "js": { "a": { "b": { "c": "d" }, "e": { "f": "g" } }, "h": "i" }
+  },
+  {
+    "name": "list in map",
+    "lamos": [
+      "a:",
+      "- b",
+      "- c",
+      "d: e"
+    ],
+    "js": { "a": ["b", "c"], "d": "e" }
+  },
+  {
+    "name": "map in list in map",
+    "lamos": [
+      "a:",
+      "- b: c",
+      "d: e"
+    ],
+    "js": { "a": [{ "b": "c" }], "d": "e" }
+  },
+  {
+    "name": "tricky map",
+    "lamos": [
+      "a:",
+      "  b:",
+      "    c: x",
+      "  d:",
+      "    e: y",
+      "f: z"
+    ],
+    "js": { "a": { "b": { "c": "x" }, "d": { "e": "y" } }, "f": "z" }
+  },
+  {
+    "name": "tricky list",
+    "lamos": [
+      "- - - w",
+      "    - x",
+      "  - y",
+      "- z"
+    ],
+    "js": [[["w", "x"], "y"], "z"]
+  },
+  {
+    "name": "map containing list of maps",
+    "lamos": [
+      "a:",
+      "- b: y",
+      "  c: z"
+    ],
+    "js": { "a": [{ "b": "y", "c": "z" }] },
+    "tokens": [
+      [["key", "a"]],
+      ["item", "in", ["key", "b"], ["string", "y"]],
+      [["key", "c"], ["string", "z"], "out"]
+    ]
+  },
+  {
+    "name": "map containing list",
+    "lamos": [
+      "a: x",
+      "b:",
+      "- y",
+      "- z"
+    ],
+    "js": { "a": "x", "b": ["y", "z"] }
+  },
+  {
+    "name": "list containing list",
+    "lamos": [
+      "- x",
+      "- - y",
+      "  - z"
+    ],
+    "js": ["x", ["y", "z"]]
+  },
+  {
+    "name": "Beatles and Stones",
+    "lamos": [
+      "Beatles:",
+      "- name: John",
+      "  plays: bass",
+      "- name: Paul",
+      "  plays: guitar",
+      "- name: George",
+      "  plays: guitar",
+      "- name: Ringo",
+      "  plays: drums",
+      "",
+      "Rolling Stones:",
+      "- name: Brian",
+      "  plays: guitar",
+      "- name: Mick",
+      "  plays: vocals",
+      "- name: Keith",
+      "  plays: guitar",
+      "- name: Bill",
+      "  plays: bass",
+      "- name: Charlie",
+      "  plays: drums",
+      "- name: Ian",
+      "  plays: piano"
+    ],
+    "js": {
+      "Beatles": [
+        { "name": "John", "plays": "bass" },
+        { "name": "Paul", "plays": "guitar" },
+        { "name": "George", "plays": "guitar" },
+        { "name": "Ringo", "plays": "drums" }
+      ],
+      "Rolling Stones": [
+        { "name": "Brian", "plays": "guitar" },
+        { "name": "Mick", "plays": "vocals" },
+        { "name": "Keith", "plays": "guitar" },
+        { "name": "Bill", "plays": "bass" },
+        { "name": "Charlie", "plays": "drums" },
+        { "name": "Ian", "plays": "piano" }
+      ]
+    }
+  },
+  {
+    "name": "ignores blank lines",
+    "lamos": [
+      "a: x",
+      "",
+      "b: y",
+      "",
+      ""
+    ],
+    "js": { "a": "x", "b": "y" }
+  },
+  {
+    "name": "ignores comment lines",
+    "lamos": [
+      "a: x",
+      "# blah blah",
+      "b: y",
+      "# blah blah",
+      "# blah blah"
+    ],
+    "js": { "a": "x", "b": "y" }
+  },
+  {
+    "name": "map as second item within list",
+    "lamos": [
+      "- w",
+      "- a:",
+      "  - y",
+      "- z"
+    ],
+    "tokens": [
+      ["item", ["string", "w"]],
+      ["item", "in", ["key", "a"]],
+      ["item", ["string", "y"]],
+      ["out", "item", ["string", "z"]]
+    ],
+    "js": ["w", { "a": ["y"] }, "z"]
+  },
+  {
+    "name": "escaped colon",
+    "lamos": [
+      "- a\\: b"
+    ],
+    "tokens": [
+      ["item", ["string", "a: b"]]
+    ],
+    "js": ["a: b"]
+  },
+  {
+    "name": "escaped colon-space at end of line",
+    "lamos": [
+      "a:",
+      "- b: ",
+      "- c"
+    ],
+    "tokens": [
+      [["key", "a"]],
+      ["item", ["string", "b: "]],
+      ["item", ["string", "c"]]
+    ],
+    "js": { "a": ["b: ", "c"] }
+  },
+  {
+    "name": "escaped colon at end of line",
+    "lamos": [
+      "a:",
+      "- b\\:",
+      "- c"
+    ],
+    "tokens": [
+      [["key", "a"]],
+      ["item", ["string", "b:"]],
+      ["item", ["string", "c"]]
+    ],
+    "js": { "a": ["b:", "c"] }
+  },
+  {
+    "name": "colon at start",
+    "lamos": [
+      "- : b"
+    ],
+    "tokens": [
+      ["item", ["string", ": b"]]
+    ],
+    "js": [": b"]
+  },
+  {
+    "name": "escaped hyphen",
+    "lamos": [
+      "- \\- a"
+    ],
+    "js": ["- a"]
+  },
+  {
+    "name": "longer key",
+    "lamos": [
+      "- abacus: x",
+      "  b: y"
+    ],
+    "js": [{ "abacus": "x", "b": "y" }]
+  },
+  {
+    "name": "escaped map pair",
+    "lamos": [
+      "a: x",
+      "b\\: y"
+    ],
+    "error": true
+  },
+  {
+    "name": "item ends with colon-space",
+    "lamos": [
+      "- a: "
+    ],
+    "js": ["a: "]
+  },
+  {
+    "name": "escaped hyphen between hyphens",
+    "lamos": [
+      "- - \\- - a"
+    ],
+    "js": [["- - a"]]
+  },
+  {
+    "name": "escaped map pair",
+    "lamos": [
+      "a: x",
+      "b\\: y"
+    ],
+    "error": true
+  },
+  {
+    "name": "item ends with colon",
+    "lamos": ["- a:"],
+    "error": true
+  },
+  {
+    "name": "escaped hyphen between hyphens",
+    "lamos": ["- - \\- - a"],
+    "js": [["- - a"]]
+  },
+  {
+    "name": "newline in string",
+    "js": ["this\nthat"],
+    "error": "Cannot serialize string with newline"
+  }
+]
