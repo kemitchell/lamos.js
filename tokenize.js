@@ -17,12 +17,19 @@ export default string => {
   for (const line of lines) {
     lineNumber++
 
+    // Skip empty lines.
+    const trimmed = line.trim()
+    if (!trimmed) continue
+
+    // Skip comment lines.
+    if (trimmed.startsWith('#')) continue
+
     // Separate line indentation from content.
-    const spaceContentMatch = /^(\s*)(.+)$/.exec(line)
-    if (!spaceContentMatch) continue
-    const spaces = spaceContentMatch[1].length
+    const spaceContentMatch = /^([\t ]*)(.+)$/.exec(line)
+    const spaces = spaceContentMatch[1]
+      .replaceAll('\t', '  ')
+      .length
     const content = spaceContentMatch[2]
-    if (content.startsWith('#') || content.length === 0) continue
 
     // Indentation
     if (spaces % 2 !== 0) throw new Error(`invalid indentation on line ${lineNumber}`)

@@ -60,3 +60,14 @@ test('sorted stringify', test => {
 test('coercion', suite => {
   assert.strictEqual(unsorted([true, false]), '- true\n- false', 'true and false to strings')
 })
+
+test('tab indentation', test => {
+  assert.deepStrictEqual(
+    parse(tokenize([
+      'a:',
+      '\tb: c'
+    ].join('\n'))),
+    { a: { b: 'c' } },
+    'treats tabs as two spaces'
+  )
+})
