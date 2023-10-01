@@ -35,10 +35,10 @@ for (const example of examples) {
       )
     }
     if (error) {
-      if (example.lamos) {
-        testError(error, () => { parse(example.lamos) })
-      } else if (example.js) {
-        testError(error, () => { unsorted(example.js) })
+      if (lamos) {
+        testError(error, () => { parse(tokenize(lamos)) })
+      } else if (js) {
+        testError(error, () => { unsorted(js) })
       }
       function testError (error, action) {
         if (typeof error === 'string') {
