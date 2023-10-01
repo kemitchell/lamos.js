@@ -55,3 +55,7 @@ test('sorted stringify', test => {
   assert.strictEqual(sorted({ b: 'z', a: 'y' }), 'a: y\nb: z')
   assert.strictEqual(unsorted({ b: 'z', a: 'y' }), 'b: z\na: y')
 })
+
+test('coercion', suite => {
+  assert.strictEqual(unsorted([true, false]), '- true\n- false', 'true and false to strings')
+})

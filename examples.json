@@ -363,5 +363,20 @@
       "   b: C"
     ],
     "error": "invalid indentation on line 2"
+  },
+  {
+    "name": "empty array",
+    "js": [],
+    "error": "empty array"
+  },
+  {
+    "name": "empty string",
+    "js": [""],
+    "error": "empty string"
+  },
+  {
+    "name": "empty object",
+    "js": {},
+    "error": "empty object"
   }
 ]
