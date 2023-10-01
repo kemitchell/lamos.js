@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "lamos",
-  "description": "lists and maps of strings serialization",
+  "description": "stringify and prase lists and maps of strings",
   "repository": "kemitchell/lamos.js",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "license": "BlueOak-1.0.0",
