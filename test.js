@@ -42,9 +42,9 @@ for (const example of examples) {
       }
       function testError (error, action) {
         if (typeof error === 'string') {
-          assert.throws(action, new RegExp(error))
+          assert.throws(action, new RegExp(error), `throws /${error}/`)
         } else {
-          assert.throws(action, 'throws')
+          assert.throws(action)
         }
       }
     }
