@@ -4,6 +4,7 @@
   "description": "lists and maps of strings serialization",
   "repository": "kemitchell/lamos.js",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
+  "license": "BlueOak-1.0.0",
   "files": [
     "index.js",
     "parse.js",
