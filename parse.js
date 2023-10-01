@@ -1,7 +1,7 @@
 export default tokens => {
   let position = -1
   let kind, value, line
-  function next () {
+  function consumeToken () {
     position++
     const token = tokens[position]
     if (token) {
@@ -14,7 +14,7 @@ export default tokens => {
       line = null
     }
   }
-  next()
+  consumeToken()
 
   if (kind === 'item') return list()
   else if (kind === 'key') return map()
@@ -23,12 +23,12 @@ export default tokens => {
   function list () {
     const returned = []
     while (kind === 'item') {
-      next()
+      consumeToken()
       if (kind === 'string') {
         returned.push(value)
-        next()
+        consumeToken()
       } else if (kind === 'in') {
-        next()
+        consumeToken()
         if (kind === 'item') {
           returned.push(list())
         } else if (kind === 'key') {
@@ -37,7 +37,7 @@ export default tokens => {
           throw new Error(`unexpected ${kind} in list on line ${line}`)
         }
         if (kind !== 'out') throw new Error(`expected out, found ${kind} in list on line ${line}`)
-        next()
+        consumeToken()
       } else {
         throw new Error(`unexpected ${kind} in list on line ${line}`)
       }
@@ -49,17 +49,17 @@ export default tokens => {
     const returned = {}
     while (kind === 'key') {
       const key = value
-      next()
+      consumeToken()
       if (kind === 'string') {
         returned[key] = value
-        next()
+        consumeToken()
       } else if (kind === 'item') {
         returned[key] = list()
       } else if (kind === 'in') {
-        next()
+        consumeToken()
         returned[key] = map()
         if (kind !== 'out') throw new Error(`execpted out, found ${kind}, in map on line ${line}`)
-        next()
+        consumeToken()
       } else {
         throw new Error(`unexpected ${kind} in map on line ${line}`)
       }
