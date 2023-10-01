@@ -8,7 +8,8 @@
     "index.js",
     "parse.js",
     "stringify.js",
-    "tokenize.js"
+    "tokenize.js",
+    "types.js"
   ],
   "devDependencies": {
     "defence-cli": "^3.0.1",

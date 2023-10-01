@@ -1,3 +1,5 @@
+import { CLOSE, ITEM, KEY, OPEN, STRING } from './types.js'
+
 export default string => {
   const lines = string.split(/\r?\n/)
 
@@ -25,11 +27,11 @@ export default string => {
     const indentLevel = spaces / 2
     if (indentLevel > lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter--) {
-        emitToken('open')
+        emitToken(OPEN)
       }
     } else if (indentLevel < lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter++) {
-        emitToken('close')
+        emitToken(CLOSE)
       }
     }
     lastIndentLevel = indentLevel
@@ -43,7 +45,7 @@ export default string => {
     while (remainder.startsWith('- ')) {
       if (offset === 0) withinInlineStructure = true
       else emulateNewIndentedLine()
-      emitToken('item')
+      emitToken(ITEM)
       offset += 2
       remainder = content.substring(offset)
     }
@@ -52,24 +54,24 @@ export default string => {
     const keyStringMatch = /^(.*[^\\]): (.+)$/.exec(remainder)
     if (keyStringMatch) {
       if (withinInlineStructure) emulateNewIndentedLine()
-      emitToken('key', replaceEscapes(keyStringMatch[1]))
-      emitToken('string', replaceEscapes(keyStringMatch[2]))
+      emitToken(KEY, replaceEscapes(keyStringMatch[1]))
+      emitToken(STRING, replaceEscapes(keyStringMatch[2]))
     } else if (remainder.endsWith(':') && !remainder.endsWith('\\:')) {
       if (withinInlineStructure) emulateNewIndentedLine()
       withinInlineStructure = true
-      emitToken('key', replaceEscapes(remainder.slice(0, -1)))
+      emitToken(KEY, replaceEscapes(remainder.slice(0, -1)))
     } else {
-      emitToken('string', replaceEscapes(remainder))
+      emitToken(STRING, replaceEscapes(remainder))
     }
 
     function emulateNewIndentedLine () {
-      emitToken('open')
+      emitToken(OPEN)
       lastIndentLevel++
     }
   }
 
   while (lastIndentLevel > 0) {
-    emitToken('close')
+    emitToken(CLOSE)
     lastIndentLevel--
   }
 

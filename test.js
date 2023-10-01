@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import * as types from './types.js'
 import assert from 'node:assert'
 import test from 'node:test'
 import tokenize from './tokenize.js'
@@ -11,9 +12,9 @@ for (const example of examples) {
   if (example.tokens) {
     example.tokens = example.tokens.map((tokensOnLine, lineIndex) => {
       return tokensOnLine.map(args => {
-        if (typeof args === 'string') return { type: args, line: lineIndex + 1 }
+        if (typeof args === 'string') return { type: types[args.toUpperCase()], line: lineIndex + 1 }
         const [type, value] = args
-        const token = { type, line: lineIndex + 1 }
+        const token = { type: types[type.toUpperCase()], line: lineIndex + 1 }
         if (value) token.value = value
         return token
       })
