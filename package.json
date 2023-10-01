@@ -1,6 +1,7 @@
 {
   "type": "module",
   "name": "lamos",
+  "main": "index.js",
   "description": "stringify and prase lists and maps of strings",
   "repository": "kemitchell/lamos.js",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
