@@ -2,8 +2,8 @@ export default string => {
   const lines = string.split(/\r?\n/)
 
   const tokens = []
-  function emitToken (kind, value) {
-    const token = { kind, line: lineNumber }
+  function emitToken (type, value) {
+    const token = { type, line: lineNumber }
     if (value) token.value = value
     tokens.push(token)
   }

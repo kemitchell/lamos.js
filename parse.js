@@ -1,15 +1,15 @@
 export default tokens => {
   let position = -1
-  let kind, value, line
+  let type, value, line
   function consumeToken () {
     position++
     const token = tokens[position]
     if (token) {
-      kind = token.kind
+      type = token.type
       value = token.value
       line = token.line
     } else {
-      kind = null
+      type = null
       value = null
       line = null
     }
@@ -17,28 +17,28 @@ export default tokens => {
   consumeToken()
 
   let returned
-  if (kind === 'item') returned = parseList()
-  else if (kind === 'key') returned = parseMap()
+  if (type === 'item') returned = parseList()
+  else if (type === 'key') returned = parseMap()
   else throw new Error('expected list or map')
-  if (kind !== null) throw new Error(`unexpected ${kind} on line ${line}`)
+  if (type !== null) throw new Error(`unexpected ${type} on line ${line}`)
   return returned
 
   function parseList () {
     const returned = []
-    while (kind === 'item') {
+    while (type === 'item') {
       consumeToken()
-      if (kind === 'string') {
+      if (type === 'string') {
         returned.push(value)
         consumeToken()
-      } else if (kind === 'in') {
+      } else if (type === 'in') {
         consumeToken()
-        if (kind === 'item') returned.push(parseList())
-        else if (kind === 'key') returned.push(parseMap())
-        else throw new Error(`unexpected ${kind} in list on line ${line}`)
-        if (kind !== 'out') throw new Error(`expected out, found ${kind} in list on line ${line}`)
+        if (type === 'item') returned.push(parseList())
+        else if (type === 'key') returned.push(parseMap())
+        else throw new Error(`unexpected ${type} in list on line ${line}`)
+        if (type !== 'out') throw new Error(`expected out, found ${type} in list on line ${line}`)
         consumeToken()
       } else {
-        throw new Error(`unexpected ${kind} in list on line ${line}`)
+        throw new Error(`unexpected ${type} in list on line ${line}`)
       }
     }
     return returned
@@ -46,21 +46,21 @@ export default tokens => {
 
   function parseMap () {
     const returned = {}
-    while (kind === 'key') {
+    while (type === 'key') {
       const key = value
       consumeToken()
-      if (kind === 'string') {
+      if (type === 'string') {
         returned[key] = value
         consumeToken()
-      } else if (kind === 'item') {
+      } else if (type === 'item') {
         returned[key] = parseList()
-      } else if (kind === 'in') {
+      } else if (type === 'in') {
         consumeToken()
         returned[key] = parseMap()
-        if (kind !== 'out') throw new Error(`expected out, found ${kind}, in map on line ${line}`)
+        if (type !== 'out') throw new Error(`expected out, found ${type}, in map on line ${line}`)
         consumeToken()
       } else {
-        throw new Error(`unexpected ${kind} in map on line ${line}`)
+        throw new Error(`unexpected ${type} in map on line ${line}`)
       }
     }
     return returned
