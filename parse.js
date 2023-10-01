@@ -54,7 +54,7 @@ export default tokens => {
       } else if (kind === 'in') {
         consumeToken()
         returned[key] = parseMap()
-        if (kind !== 'out') throw new Error(`execpted out, found ${kind}, in map on line ${line}`)
+        if (kind !== 'out') throw new Error(`expected out, found ${kind}, in map on line ${line}`)
         consumeToken()
       } else {
         throw new Error(`unexpected ${kind} in map on line ${line}`)
