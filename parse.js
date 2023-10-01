@@ -29,13 +29,9 @@ export default tokens => {
         consumeToken()
       } else if (kind === 'in') {
         consumeToken()
-        if (kind === 'item') {
-          returned.push(parseList())
-        } else if (kind === 'key') {
-          returned.push(parseMap())
-        } else {
-          throw new Error(`unexpected ${kind} in list on line ${line}`)
-        }
+        if (kind === 'item') returned.push(parseList())
+        else if (kind === 'key') returned.push(parseMap())
+        else throw new Error(`unexpected ${kind} in list on line ${line}`)
         if (kind !== 'out') throw new Error(`expected out, found ${kind} in list on line ${line}`)
         consumeToken()
       } else {
