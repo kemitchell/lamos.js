@@ -16,9 +16,12 @@ export default tokens => {
   }
   consumeToken()
 
-  if (kind === 'item') return parseList()
-  else if (kind === 'key') return parseMap()
+  let returned
+  if (kind === 'item') returned = parseList()
+  else if (kind === 'key') returned = parseMap()
   else throw new Error('expected list or map')
+  if (kind !== null) throw new Error(`unexpected ${kind} on line ${line}`)
+  return returned
 
   function parseList () {
     const returned = []
