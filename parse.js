@@ -16,13 +16,17 @@ export default tokens => {
   }
   consumeToken()
 
+  // root := list | map
   let returned
   if (type === 'item') returned = parseList()
   else if (type === 'key') returned = parseMap()
   else throw new Error('expected list or map')
+
+  // Check for extra, unconsumed tokens.
   if (type !== null) throw new Error(`unexpected ${type} on line ${line}`)
   return returned
 
+  // list := ( item | ( in ( list | map ) out ) )+
   function parseList () {
     const returned = []
     while (type === 'item') {
@@ -32,9 +36,11 @@ export default tokens => {
         consumeToken()
       } else if (type === 'in') {
         consumeToken()
+
         if (type === 'item') returned.push(parseList())
         else if (type === 'key') returned.push(parseMap())
         else throw new Error(`unexpected ${type} in list on line ${line}`)
+
         if (type !== 'out') throw new Error(`expected out, found ${type} in list on line ${line}`)
         consumeToken()
       } else {
@@ -44,11 +50,13 @@ export default tokens => {
     return returned
   }
 
+  // map := ( key ( string | list | in map out ) )+
   function parseMap () {
     const returned = {}
     while (type === 'key') {
       const key = value
       consumeToken()
+
       if (type === 'string') {
         returned[key] = value
         consumeToken()
@@ -56,7 +64,9 @@ export default tokens => {
         returned[key] = parseList()
       } else if (type === 'in') {
         consumeToken()
+
         returned[key] = parseMap()
+
         if (type !== 'out') throw new Error(`expected out, found ${type}, in map on line ${line}`)
         consumeToken()
       } else {
