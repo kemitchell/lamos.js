@@ -2,17 +2,17 @@ import { CLOSE, ITEM, KEY, OPEN, STRING } from './types.js'
 
 export default tokens => {
   let position = -1
-  let type, value, line
+  let type, text, line
   function consumeToken () {
     position++
     const token = tokens[position]
     if (token) {
       type = token.type
-      value = token.value
+      text = token.text
       line = token.line
     } else {
       type = null
-      value = null
+      text = null
       line = null
     }
   }
@@ -34,7 +34,7 @@ export default tokens => {
     while (type === ITEM) {
       consumeToken()
       if (type === STRING) {
-        returned.push(value)
+        returned.push(text)
         consumeToken()
       } else if (type === OPEN) {
         consumeToken()
@@ -56,11 +56,11 @@ export default tokens => {
   function parseMap () {
     const returned = {}
     while (type === KEY) {
-      const key = value
+      const key = text
       consumeToken()
 
       if (type === STRING) {
-        returned[key] = value
+        returned[key] = text
         consumeToken()
       } else if (type === ITEM) {
         returned[key] = parseList()

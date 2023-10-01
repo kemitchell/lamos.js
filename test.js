@@ -13,9 +13,9 @@ for (const example of examples) {
     example.tokens = example.tokens.map((tokensOnLine, lineIndex) => {
       return tokensOnLine.map(args => {
         if (typeof args === 'string') return { type: types[args.toUpperCase()], line: lineIndex + 1 }
-        const [type, value] = args
+        const [type, text] = args
         const token = { type: types[type.toUpperCase()], line: lineIndex + 1 }
-        if (value) token.value = value
+        if (text) token.text = text
         return token
       })
     }).flat()
