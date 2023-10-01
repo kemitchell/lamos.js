@@ -25,10 +25,10 @@ for (const example of examples) {
 
   const { name, lamos, js, tokens, error } = example
   test(name, test => {
-    if (tokens) assert.deepEqual(tokenize(lamos), tokens, 'tokenize')
+    if (tokens) assert.deepStrictEqual(tokenize(lamos), tokens, 'tokenize')
     if (lamos && js) {
-      assert.deepEqual(parse(tokenize(lamos)), js, 'parse')
-      assert.deepEqual(
+      assert.deepStrictEqual(parse(tokenize(lamos)), js, 'parse')
+      assert.deepStrictEqual(
         lamos.split('\n').filter(line => line.length > 0 && !line.startsWith('#')).join('\n'),
         unsorted(js),
         'stringify'
@@ -52,6 +52,6 @@ for (const example of examples) {
 }
 
 test('sorted stringify', test => {
-  assert.equal(sorted({ b: 'z', a: 'y' }), 'a: y\nb: z')
-  assert.equal(unsorted({ b: 'z', a: 'y' }), 'b: z\na: y')
+  assert.strictEqual(sorted({ b: 'z', a: 'y' }), 'a: y\nb: z')
+  assert.strictEqual(unsorted({ b: 'z', a: 'y' }), 'b: z\na: y')
 })
