@@ -63,9 +63,9 @@
     "js": ["a", [["b"], "c"], "d"],
     "tokens": [
       ["item", ["string", "a"]],
-      ["item", "in", "item", "in", "item", ["string", "b"]],
-      ["out", "item", ["string", "c"]],
-      ["out", "item", ["string", "d"]]
+      ["item", "open", "item", "open", "item", ["string", "b"]],
+      ["close", "item", ["string", "c"]],
+      ["close", "item", ["string", "d"]]
     ]
   },
   {
@@ -143,8 +143,8 @@
     "js": { "a": [{ "b": "y", "c": "z" }] },
     "tokens": [
       [["key", "a"]],
-      ["item", "in", ["key", "b"], ["string", "y"]],
-      [["key", "c"], ["string", "z"], "out"]
+      ["item", "open", ["key", "b"], ["string", "y"]],
+      [["key", "c"], ["string", "z"], "close"]
     ]
   },
   {
@@ -242,9 +242,9 @@
     ],
     "tokens": [
       ["item", ["string", "w"]],
-      ["item", "in", ["key", "a"]],
+      ["item", "open", ["key", "a"]],
       ["item", ["string", "y"]],
-      ["out", "item", ["string", "z"]]
+      ["close", "item", ["string", "z"]]
     ],
     "js": ["w", { "a": ["y"] }, "z"]
   },

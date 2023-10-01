@@ -25,11 +25,11 @@ export default string => {
     const indentLevel = spaces / 2
     if (indentLevel > lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter--) {
-        emitToken('in')
+        emitToken('open')
       }
     } else if (indentLevel < lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter++) {
-        emitToken('out')
+        emitToken('close')
       }
     }
     lastIndentLevel = indentLevel
@@ -63,13 +63,13 @@ export default string => {
     }
 
     function emulateNewIndentedLine () {
-      emitToken('in')
+      emitToken('open')
       lastIndentLevel++
     }
   }
 
   while (lastIndentLevel > 0) {
-    emitToken('out')
+    emitToken('close')
     lastIndentLevel--
   }
 
