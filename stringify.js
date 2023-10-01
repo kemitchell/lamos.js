@@ -1,7 +1,12 @@
+// Given an Array or Object,
+// return LAMOS.
 export function unsorted (data) {
   return recurse(data, 0)
 }
 
+// Given an Array or Object,
+// return LAMOS,
+// sorting all Map keys.
 export function sorted (data) {
   return recurse(data, 0, true)
 }

@@ -1,5 +1,7 @@
 import { CLOSE, ITEM, KEY, OPEN, STRING } from './types.js'
 
+// Given a string of LAMOS,
+// return an array of token objects.
 export default string => {
   const lines = string.split(/\r?\n/)
 

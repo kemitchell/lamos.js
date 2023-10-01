@@ -1,5 +1,7 @@
 import { CLOSE, ITEM, KEY, OPEN, STRING } from './types.js'
 
+// Given an array of token objects,
+// return the Array or Object they represent.
 export default tokens => {
   let position = -1
   let type, text, line
