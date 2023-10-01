@@ -2,7 +2,7 @@ export default string => {
   const lines = string.split(/\r?\n/)
 
   const tokens = []
-  function emit (kind, value) {
+  function emitToken (kind, value) {
     const token = { kind, line: lineNumber }
     if (value) token.value = value
     tokens.push(token)
@@ -25,11 +25,11 @@ export default string => {
     const indentLevel = spaces / 2
     if (indentLevel > lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter--) {
-        emit('in')
+        emitToken('in')
       }
     } else if (indentLevel < lastIndentLevel) {
       for (let counter = indentLevel; counter !== lastIndentLevel; counter++) {
-        emit('out')
+        emitToken('out')
       }
     }
     lastIndentLevel = indentLevel
@@ -43,7 +43,7 @@ export default string => {
     while (remainder.startsWith('- ')) {
       if (offset === 0) withinInlineStructure = true
       else emulateNewIndentedLine()
-      emit('item')
+      emitToken('item')
       offset += 2
       remainder = content.substring(offset)
     }
@@ -52,24 +52,24 @@ export default string => {
     const keyStringMatch = /^(.*[^\\]): (.+)$/.exec(remainder)
     if (keyStringMatch) {
       if (withinInlineStructure) emulateNewIndentedLine()
-      emit('key', replaceEscapes(keyStringMatch[1]))
-      emit('string', replaceEscapes(keyStringMatch[2]))
+      emitToken('key', replaceEscapes(keyStringMatch[1]))
+      emitToken('string', replaceEscapes(keyStringMatch[2]))
     } else if (remainder.endsWith(':') && !remainder.endsWith('\\:')) {
       if (withinInlineStructure) emulateNewIndentedLine()
       withinInlineStructure = true
-      emit('key', replaceEscapes(remainder.slice(0, -1)))
+      emitToken('key', replaceEscapes(remainder.slice(0, -1)))
     } else {
-      emit('string', replaceEscapes(remainder))
+      emitToken('string', replaceEscapes(remainder))
     }
 
     function emulateNewIndentedLine () {
-      emit('in')
+      emitToken('in')
       lastIndentLevel++
     }
   }
 
   while (lastIndentLevel > 0) {
-    emit('out')
+    emitToken('out')
     lastIndentLevel--
   }
 
