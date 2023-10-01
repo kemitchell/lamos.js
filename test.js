@@ -1,5 +1,6 @@
 import fs from 'node:fs'
-import tape from 'tape'
+import assert from 'node:assert'
+import test from 'node:test'
 import tokenize from './tokenize.js'
 import parse from './parse.js'
 import { unsorted, sorted } from './stringify.js'
@@ -23,11 +24,11 @@ for (const example of examples) {
   }
 
   const { name, lamos, js, tokens, error } = example
-  tape(name, test => {
-    if (tokens) test.deepEqual(tokenize(lamos), tokens, 'tokenize')
+  test(name, test => {
+    if (tokens) assert.deepEqual(tokenize(lamos), tokens, 'tokenize')
     if (lamos && js) {
-      test.deepEqual(parse(tokenize(lamos)), js, 'parse')
-      test.deepEqual(
+      assert.deepEqual(parse(tokenize(lamos)), js, 'parse')
+      assert.deepEqual(
         lamos.split('\n').filter(line => line.length > 0 && !line.startsWith('#')).join('\n'),
         unsorted(js),
         'stringify'
@@ -41,18 +42,16 @@ for (const example of examples) {
       }
       function testError (error, action) {
         if (typeof error === 'string') {
-          test.throws(action, new RegExp(error))
+          assert.throws(action, new RegExp(error))
         } else {
-          test.throws(action, 'throws')
+          assert.throws(action, 'throws')
         }
       }
     }
-    test.end()
   })
 }
 
-tape('sorted stringify', test => {
-  test.equal(sorted({ b: 'z', a: 'y' }), 'a: y\nb: z')
-  test.equal(unsorted({ b: 'z', a: 'y' }), 'b: z\na: y')
-  test.end()
+test('sorted stringify', test => {
+  assert.equal(sorted({ b: 'z', a: 'y' }), 'a: y\nb: z')
+  assert.equal(unsorted({ b: 'z', a: 'y' }), 'b: z\na: y')
 })
