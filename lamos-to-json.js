@@ -1,4 +1,5 @@
-import { parse } from './index.js'
+#!/usr/bin/env node
+import { parse } from 'lamos'
 
 const chunks = []
 process.stdin

@@ -1,4 +1,5 @@
-import { stableStringify } from './index.js'
+#!/usr/bin/env node
+import { stableStringify } from 'lamos'
 
 const chunks = []
 process.stdin
