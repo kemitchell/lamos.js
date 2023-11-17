@@ -8,11 +8,17 @@
   "license": "BlueOak-1.0.0",
   "files": [
     "index.js",
+    "lamos-to-json.js",
+    "json-to-lamos.js",
     "parse.js",
     "stringify.js",
     "tokenize.js",
     "types.js"
   ],
+  "bin": {
+    "lamos-to-json": "lamos-to-json.js",
+    "json-to-lamos": "json-to-lamos.js"
+  },
   "devDependencies": {
     "defence-cli": "^3.0.1",
     "licensee": "^10.0.0",

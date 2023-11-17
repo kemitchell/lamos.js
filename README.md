@@ -1,5 +1,9 @@
+# LAMOS
+
 Lists and Maps of Strings (LAMOS) is a very simple, plain-text data
-serialization format:
+serialization format.
+
+## Syntax
 
 ```lamos
 # This is a comment.
@@ -41,6 +45,8 @@ lists, or empty maps.
 
 As a result, LAMOS is far easier to read and to type than JSON, but far
 easier to construct and parse than YAML.
+
+## API
 
 This JavaScript implementation exposes an API like the built-in `JSON`
 object:
@@ -90,6 +96,10 @@ assert.equal(
 )
 ```
 
-A number of streaming, command-line, and other packages with the
-[`lamos` npm keyword](https://www.npmjs.com/browse/keyword/lamos)
-are also available.
+## Command Line Utilities
+
+```bash
+npm install --global lamos
+json-to-lamos < data.json > data.lamos
+lamos-to-json < data.lamos
+```
