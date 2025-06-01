@@ -14,8 +14,7 @@ format:
 - line-delimited
 
 indentation:
-- spaces
-- two at a time
+  spaces: two at a time
 
 structures:
 - list item
