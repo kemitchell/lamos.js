@@ -22,8 +22,8 @@ structures:
     # Comments can also be indented.
     another key: another value
     yet another key: yet another value
-  still another key:
   # Comments can go most anywhere.
+  still another key:
   - containing a list!
   - of two items!
 
